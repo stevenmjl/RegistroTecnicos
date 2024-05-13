@@ -10,4 +10,9 @@
     <PackageReference Include="Microsoft.EntityFrameWorkCore.sqlite" Version="8.0.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DAL\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>
