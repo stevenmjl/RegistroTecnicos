@@ -16,7 +16,7 @@ namespace RegistroTecnicos.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.4");
 
-            modelBuilder.Entity("RegistroTecnicos.Models.Tecnicos", b =>
+            modelBuilder.Entity("RegistroTecnicos.Models.Tecnico", b =>
                 {
                     b.Property<int>("TecnicoId")
                         .ValueGeneratedOnAdd()
@@ -30,7 +30,7 @@ namespace RegistroTecnicos.Migrations
 
                     b.HasKey("TecnicoId");
 
-                    b.ToTable("Tecnicos");
+                    b.ToTable("Tecnico");
                 });
 #pragma warning restore 612, 618
         }

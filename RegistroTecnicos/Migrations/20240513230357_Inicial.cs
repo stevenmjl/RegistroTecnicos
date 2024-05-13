@@ -11,7 +11,7 @@ namespace RegistroTecnicos.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Tecnicos",
+                name: "Tecnico",
                 columns: table => new
                 {
                     TecnicoId = table.Column<int>(type: "INTEGER", nullable: false)
@@ -21,7 +21,7 @@ namespace RegistroTecnicos.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tecnicos", x => x.TecnicoId);
+                    table.PrimaryKey("PK_Tecnico", x => x.TecnicoId);
                 });
         }
 
@@ -29,7 +29,7 @@ namespace RegistroTecnicos.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Tecnicos");
+                name: "Tecnico");
         }
     }
 }
