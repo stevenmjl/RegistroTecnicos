@@ -13,22 +13,24 @@ namespace RegistroTecnicos.Services
             _context = contexto;
         }
 
-        public async Task<bool> Existe(int tecnicoId)
+        private async Task<bool> Existe(int tecnicoId)
         {
             return await _context.Tecnico
                 .AnyAsync(t => t.TecnicoId ==  tecnicoId);
         }
 
-        public async Task<bool> Insertar(Tecnico tecnico)
+        private async Task<bool> Insertar(Tecnico tecnico)
         {
             _context.Tecnico.Add(tecnico);
-            return await _context.SaveChangesAsync() > 0;
+            return await _context
+                .SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> Modificar(Tecnico tecnicos)
+        private async Task<bool> Modificar(Tecnico tecnicos)
         {
             _context.Update(tecnicos);
-            return await _context.SaveChangesAsync() > 0;
+            return await _context
+                .SaveChangesAsync() > 0;
         }
 
         public async Task<bool> Guardar(Tecnico tecnicos)
@@ -42,8 +44,8 @@ namespace RegistroTecnicos.Services
 
         public async Task<bool> Eliminar (int id)
         {
-            var tecnicos = await _context.Tecnico.
-                Where(t => t.TecnicoId == id)
+            var tecnicos = await _context.Tecnico
+                .Where(t => t.TecnicoId == id)
                 .ExecuteDeleteAsync();
             return tecnicos > 0;
         }
