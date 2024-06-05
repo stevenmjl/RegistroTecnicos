@@ -1,5 +1,52 @@
-﻿<h3>Details</h3>
+﻿@page "/Tecnico/Details/tecnicoid={idTecnico:int}"
+@rendermode InteractiveServer
+@inject TecnicoServices tecnicoServices
+@inject NavigationManager navigation
+
+<PageTitle>Detalles</PageTitle>
+
+<div class="container">
+    <div class="card shadow-lg">
+        @*Header*@
+        <div class="card-header text-white text-center">
+            <div class="bg-primary rounded">
+                <h1>Detalles del t&eacute;nico</h1>
+            </div>
+        </div>
+        @*Body*@
+        <div class="card-body" style="display: flex; justify-content: space-between;">
+            <Card Color="CardColor.Primary" Class="mb-2" Style="width:24rem;">
+                <CardHeader>
+                    <CardTitle>
+                        ID: @Tecnico.TecnicoId
+                    </CardTitle>
+                </CardHeader>
+                <CardBody>
+                    <CardText>@Tecnico.Nombre</CardText>
+                    <CardText>Sueldo: @Tecnico.SueldoHora.ToString("N2")</CardText>
+                </CardBody>
+            </Card>
+
+            <h6>Aqu&iacute; podr&aacute; ver todos los datos del t&eacute;cnico en cuesti&oacute;n.</h6>
+        </div>
+
+        @*Footer*@
+        <div class="card-footer">
+            <button class="btn btn-outline-secondary" type="button" @onclick="Volver">Volver</button>
+        </div>
+    </div>
+</div>
 
 @code {
 
+    public Tecnicos? Tecnico { get; set; } = new Tecnicos();
+    [Parameter]
+    public int idTecnico { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Tecnico = await tecnicoServices.Buscar(idTecnico);
+    }
+
+    public void Volver() => navigation.NavigateTo("/Tecnico/Index");
 }
