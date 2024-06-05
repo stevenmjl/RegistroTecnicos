@@ -22,7 +22,7 @@ namespace RegistroTecnicos
             builder.Services.AddDbContext<Contexto>(Options => Options.UseSqlite(ConStr));
 
             // Inyectar el servicio
-            builder.Services.AddScoped<TecnicosServices>();
+            builder.Services.AddScoped<TecnicoServices>();
 
             // Implemento de Bootstrap
             builder.Services.AddBlazorBootstrap();
