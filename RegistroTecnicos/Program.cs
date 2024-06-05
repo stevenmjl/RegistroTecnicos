@@ -24,6 +24,7 @@ namespace RegistroTecnicos
             // Inyectar el servicio
             builder.Services.AddScoped<TecnicosServices>();
 
+            // Implemento de Bootstrap
             builder.Services.AddBlazorBootstrap();
 
             var app = builder.Build();
