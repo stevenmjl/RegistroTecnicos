@@ -9,7 +9,7 @@
     <div class="card shadow-lg">
         @*Header*@
         <div class="card-header text-white text-center">
-            <div class="bg-info rounded">
+            <div class="bg-primary rounded">
                 <h1>Registro de t&eacute;cnicos</h1>
             </div>
         </div>
@@ -24,19 +24,18 @@
                         <option value="nombre">Nombre</option>
                     </select>
                 </div>
-                @*Busqueda*@
+                @*Buscar*@
                 <div class="col-md-5">
-                    <label for="ValorFiltro" class="form-label">Búsqueda:</label>
                     <div class="input-group">
-                        <input @bind="valorFiltro" class="form-control" placeholder="Buscar el técnico" />
+                        <input @bind="valorFiltro" class="form-control" placeholder="Buscar dato" />
                         <button @onclick="Buscar" class="btn btn-outline-primary" type="button">
                             <span class="bi bi-search"></span> Buscar
                         </button>
                     </div>
                 </div>
-                @*Restablecer Tabla*@
+                @*Restablecer tabla*@
                 <div class="col-md-2">
-                    <button class="btn btn-outline-dark bi bi-arrow-clockwise" type="button" @onclick="OnInitializedAsync"> Todos</button>
+                    <button class="btn btn-outline-dark bi bi-arrow-clockwise" type="button" @onclick="OnInitializedAsync"> Reiniciar todo</button>
                 </div>
                 @*Crear*@
                 <div class="col-md-3 text-end">
@@ -63,7 +62,7 @@
                             <td>@tecnico.TecnicoId</td>
                             <td>@tecnico.Nombre</td>
                             <td>@tecnico.SueldoHora.ToString("N2")</td>
-                             <td><button type="button" class="btn btn-outline-info bi bi-eye" @onclick="()=>Detalles(tecnico.TecnicoId)"></button></td>
+                            <td><button type="button" class="btn btn-outline-info bi bi-eye" @onclick="()=>Detalles(tecnico.TecnicoId)"></button></td>
                             <td><button type="button" class="btn btn-outline-warning bi bi-pencil-square" @onclick="()=>Editar(tecnico.TecnicoId)"></button></td>
                             <td><button type="button" class="btn btn-outline-danger bi bi-trash" @onclick="()=>Eliminar(tecnico.TecnicoId)"></button></td>
                         </tr>
