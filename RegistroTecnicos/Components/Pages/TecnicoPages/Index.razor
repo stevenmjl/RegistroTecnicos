@@ -21,7 +21,7 @@
                     <label for="Filtro" class="form-label">Filtrar por:</label>
                     <select @bind="filtro" class="form-select">
                         <option value="id">ID</option>
-                        <option value="nombre">Nombre</option>
+                        <option value="nombre" selected>Nombre</option>
                     </select>
                 </div>
                 @*Buscar*@
@@ -85,7 +85,7 @@
     protected override async Task OnInitializedAsync()
     {
         ListaTecnicos = await tecnicoServices.Listar(e => true);
-        filtro = "";
+        filtro = "nombre";
         valorFiltro = "";
     }
 
