@@ -61,7 +61,7 @@
                     {
                         <tr class="text-center">
                             <td>@tecnico.TecnicoId</td>
-                            <td>@tecnico.Nombres</td>
+                            <td>@tecnico.Nombre</td>
                             <td>@tecnico.SueldoHora.ToString("N2")</td>
                              <td><button type="button" class="btn btn-outline-info bi bi-eye" @onclick="()=>Detalles(tecnico.TecnicoId)"></button></td>
                             <td><button type="button" class="btn btn-outline-warning bi bi-pencil-square" @onclick="()=>Editar(tecnico.TecnicoId)"></button></td>
@@ -100,7 +100,7 @@
             }
             else if (filtro == "nombre")
             {
-                ListaTecnicos = await tecnicoServices.Listar(t => t.Nombres.ToLower().Contains(valorFiltro.ToLower()));
+                ListaTecnicos = await tecnicoServices.Listar(t => t.Nombre.ToLower().Contains(valorFiltro.ToLower()));
             }
         }
         else
