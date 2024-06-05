@@ -3,7 +3,7 @@
 @inject TecnicoServices tecnicoServices
 @inject NavigationManager navigation
 
-<PageTitle>Crear T&eacute;cnico</PageTitle>
+<PageTitle>Crear t&eacute;cnico</PageTitle>
 
 <EditForm Model="Tecnico" OnValidSubmit="Guardar">
     <Toasts class="p-3" Messages="Mensajes" Placement="ToastsPlacement.TopRight" Delay="5000" />
@@ -14,7 +14,7 @@
             @*Header*@
             <div class="card-header text-white text-center">
                 <div class="bg-primary rounded">
-                    <h1>Crear T&eacute;cnico</h1>
+                    <h1>Crear t&eacute;cnico</h1>
                 </div>
             </div>
             @*Body*@
@@ -22,13 +22,13 @@
                 <div class="col-1">
                     @*Id*@
                     <label class="form-label" for="Id">Id</label>
-                    <InputNumber id="Id" class="form-control" readonly @bind-Value="Tecnico.TecnicoId"></InputNumber>
+                    <InputNumber id="Id" class="form-control text-center" readonly @bind-Value="CantidadTecnicos"></InputNumber>
                 </div>
                 <div class="row">
                     @*Nombre*@
-                    <div class="col-3">
+                    <div class="col-4">
                         <label class="form-label" for="Nombres">Nombre</label>
-                        <InputText id="Nombres" class="form-control" @bind-Value="Tecnico.Nombre" placeholder="Ej: Daniela Santana"></InputText>
+                        <InputText id="Nombres" class="form-control" @bind-Value="Tecnico.Nombre" placeholder="Ej: Angela Santana"></InputText>
                         <ValidationMessage For="@(()=>Tecnico.Nombre)"></ValidationMessage>
                     </div>
                     @*SueldoHora*@
@@ -51,8 +51,14 @@
 @code {
 
     public Tecnicos? Tecnico { get; set; } = new Tecnicos();
-
     List<ToastMessage> Mensajes = new List<ToastMessage>();
+
+    private int CantidadTecnicos;
+    protected override async Task OnInitializedAsync()
+    {
+        CantidadTecnicos = 1 + await tecnicoServices.Cantidad();
+    }
+
 
     public async Task Guardar()
     {

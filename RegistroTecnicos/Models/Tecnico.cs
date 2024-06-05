@@ -9,7 +9,7 @@ public class Tecnicos
 
     [Required(ErrorMessage = "Se debe agregar el nombre completo.")]
     [RegularExpression(@"[a-zA-ZñÑ\s]+$", ErrorMessage = "Este campo no debe contener caracteres especiales")]
-    public string Nombre { get; set; } = "Nombre";
+    public string? Nombre { get; set; }
 
     [Required(ErrorMessage = "Debe tener un sueldo correcto.")]
     [Range(0.1, 100000000, ErrorMessage = "Ingrese un sueldo mayor a 0 y menor a 100,000,000")]

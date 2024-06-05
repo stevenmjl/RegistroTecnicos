@@ -62,5 +62,9 @@ namespace RegistroTecnicos.Services
                 .Where(criterio)
                 .ToListAsync();
         }
+        public async Task<int> Cantidad()
+        {
+            return await _contexto.Tecnico.CountAsync();
+        }
     }
 }
