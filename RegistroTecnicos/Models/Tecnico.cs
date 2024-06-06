@@ -8,7 +8,8 @@ public class Tecnicos
     public int TecnicoId { get; set; }
 
     [Required(ErrorMessage = "Se debe agregar el nombre completo.")]
-    [RegularExpression(@"^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$", ErrorMessage = "Este campo no debe contener números ni caracteres especiales.")]
+    [RegularExpression(@"^[a-zA-ZñÑáéíóúÁÉÍÓÚàâçèéêëîïôûùüÿÀÂÇÈÉÊËÎÏÔÛÙÜŸ\s]+$",
+    ErrorMessage = "Este campo no debe contener números ni caracteres especiales.")]
     public string? Nombre { get; set; }
 
     [Required(ErrorMessage = "Debe tener un sueldo correcto.")]
