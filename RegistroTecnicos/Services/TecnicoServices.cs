@@ -62,9 +62,12 @@ namespace RegistroTecnicos.Services
                 .Where(criterio)
                 .ToListAsync();
         }
-        public async Task<int> Cantidad()
+        public async Task<int> UltimoId()
         {
-            return await _contexto.Tecnico.CountAsync();
+            var ultimoTecnico = await _contexto.Tecnico
+                .OrderByDescending(t => t.TecnicoId)
+                .FirstOrDefaultAsync();
+            return ultimoTecnico?.TecnicoId ?? 0;
         }
     }
 }
