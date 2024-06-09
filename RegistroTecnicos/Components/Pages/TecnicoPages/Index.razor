@@ -50,7 +50,7 @@
 
                 @*Restablecer tabla*@
                 <div class="col-md-3">
-                    <button class="btn btn-outline-dark bi bi-arrow-clockwise" type="button"
+                    <button class="btn btn-outline-secondary bi bi-arrow-clockwise" type="button"
                             @onclick="OnInitializedAsync">
                         Reiniciar todo
                     </button>
@@ -85,7 +85,7 @@
                             <td>@tecnico.Nombre</td>
                             <td>@tecnico.SueldoHora.ToString("N2")</td>
                             <td>
-                                <button type="button" class="btn btn-outline-info bi bi-eye"
+                                <button type="button" class="btn btn-outline-info bi bi-journal-text"
                                         @onclick="()=>Detalles(tecnico.TecnicoId)"></button>
                             </td>
                             <td>
