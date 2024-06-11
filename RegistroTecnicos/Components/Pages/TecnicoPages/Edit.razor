@@ -12,14 +12,14 @@
 
     <div class="container">
         <div class="card shadow-lg">
-            @*Header*@
+            @*Titulo*@
             <div class="card-header text-white text-center">
                 <div class="bg-warning rounded">
                     <h1>Editar t&eacute;cnico</h1>
                 </div>
             </div>
 
-            @*Body*@
+            @*Centro de manejo*@
             <div class="card-body">
                 <div class="col-1">
                     @*Id*@
@@ -71,7 +71,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Tecnico = await tecnicoServices.Buscar(idTecnico);
+        Tecnico = await tecnicoServices.BuscarId(idTecnico);
     }
 
     public async Task Editar()

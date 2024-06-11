@@ -49,7 +49,7 @@ namespace RegistroTecnicos.Services
                 .ExecuteDeleteAsync();
             return tecnico > 0;
         }
-        public async Task<Tecnicos?> Buscar(int tecnicoId)
+        public async Task<Tecnicos?> BuscarId(int tecnicoId)
         {
             return await _contexto.Tecnico
                 .AsNoTracking()

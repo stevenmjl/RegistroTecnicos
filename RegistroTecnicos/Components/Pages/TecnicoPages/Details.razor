@@ -7,14 +7,14 @@
 
 <div class="container">
     <div class="card shadow-lg">
-        @*Header*@
+        @*Titulo*@
         <div class="card-header text-center">
             <div class="bg-info rounded">
                 <h1>Detalles del t&eacute;nico</h1>
             </div>
         </div>
 
-        @*Body*@
+        @*Centro de manejo*@
         <div class="card-body" style="display: flex; justify-content: space-between;">
             <Card Color="CardColor.Info" Class="mb-2" Style="width:24rem;">
                 <CardHeader>
@@ -27,8 +27,6 @@
                     <CardText>Sueldo: @Tecnico.SueldoHora.ToString("N2")</CardText>
                 </CardBody>
             </Card>
-
-            <h6>Aqu&iacute; podr&aacute; ver todos los datos del t&eacute;cnico en cuesti&oacute;n.</h6>
         </div>
 
         @*Footer*@
@@ -47,7 +45,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Tecnico = await tecnicoServices.Buscar(idTecnico);
+        Tecnico = await tecnicoServices.BuscarId(idTecnico);
     }
 
     public void Volver() => navigation.NavigateTo("/Tecnico/Index");
