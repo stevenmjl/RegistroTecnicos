@@ -10,7 +10,6 @@
     <Folder Include="Components\Pages\TecnicosPages\" />
     <Folder Include="DAL\" />
     <Folder Include="Data\" />
-    <Folder Include="Models\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
