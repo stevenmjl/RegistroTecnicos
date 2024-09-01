@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Components\Pages\TecnicosPages\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Blazor.Bootstrap" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameWorkCore.SQLite" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameWorkCore.Tools" Version="8.0.8">

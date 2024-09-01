@@ -1,6 +1,6 @@
 ﻿<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">RegistroTecnicos</a>
+        <a class="navbar-brand" href="">Men&uacute; del registro</a>
     </div>
 </div>
 
@@ -8,13 +8,22 @@
 
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="flex-column">
+        @*Home*@
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
             </NavLink>
         </div>
 
-        
+        @*Técnicos*@
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/Tecnico/Index">
+                <span class="bi bi-person-fill-gear align-items-center d-flex justify-content-center"
+                      style="font-size: 1.5em;" aria-hidden="true"></span> T&eacute;cnicos
+            </NavLink>
+        </div>
+
+        @*Futuras implementaciones*@
     </nav>
 </div>
 
