@@ -16,6 +16,13 @@
 
         @*Vista general*@
         <div class="card-body">
+            @*Botón crear*@
+            <div class="col-md-14 text-center">
+                <button class="btn btn-success bi bi-person-fill-add" type="button"
+                        @onclick="Crear">
+                    Crear
+                </button>
+            </div>
             <div class="row mb-2 align-items-end">
                 @*Zona de Filtro*@
                 <div class="row align-items-center">
@@ -54,14 +61,6 @@
                     <button class="btn btn-outline-secondary bi bi-arrow-clockwise" type="button"
                             @onclick="OnInitializedAsync">
                         Reiniciar todo
-                    </button>
-                </div>
-
-                @*Botón crear*@
-                <div class="col-md-2 text-end">
-                    <button class="btn btn-success bi bi-person-fill-add" type="button"
-                            @onclick="Crear">
-                        Crear
                     </button>
                 </div>
             </div>
