@@ -70,7 +70,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Tecnico = await tecnicoService.BuscarId(idTecnico);
+        var tecnicoExistente = await tecnicoService.BuscarId(idTecnico);
+        if (tecnicoExistente != null)
+        {
+            // Desvincula la entidad si ya estaba rastreada
+            tecnicoService.DesvincularLocal(tecnicoExistente.TecnicoId);
+            Tecnico = tecnicoExistente;
+        }
     }
 
     public async Task Editar()

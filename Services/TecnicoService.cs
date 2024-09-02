@@ -65,11 +65,23 @@ public class TecnicoService
             .Where(criterio)
             .ToListAsync();
     }
+
+    // Usado en la visualización de la tabla técnicos
     public async Task<int> UltimoId()
     {
         var ultimoTecnico = await _contexto.Tecnico
             .OrderByDescending(t => t.TecnicoId)
             .FirstOrDefaultAsync();
         return ultimoTecnico != null ? ultimoTecnico.TecnicoId : 0;
+    }
+
+    // Para evitar errores de rasteo de entidad
+    public void DesvincularLocal(int tecnicoId)
+    {
+        var local = _contexto.Set<Tecnicos>().Local.FirstOrDefault(entry => entry.TecnicoId == tecnicoId);
+        if (local != null)
+        {
+            _contexto.Entry(local).State = EntityState.Detached;
+        }
     }
 }
