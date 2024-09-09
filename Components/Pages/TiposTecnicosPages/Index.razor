@@ -1,0 +1,159 @@
+﻿@page "/TiposTecnico/Index"
+@rendermode InteractiveServer
+@inject TiposTecnicoService tiposTecnicoService
+@inject NavigationManager navigation
+
+<PageTitle>Tipos t&eacute;cnicos</PageTitle>
+
+<div class="container">
+    <div class="card shadow-lg">
+        @*Titulo*@
+        <div class="card-header text-white text-center">
+            <div class="bg-primary rounded">
+                <h1>Registro de tipos t&eacute;cnicos</h1>
+            </div>
+        </div>
+
+        @*Vista general*@
+        <div class="card-body">
+            <div class="row mb-2 align-items-end">
+                @*Zona de Filtro*@
+                <div class="row align-items-center">
+                    <div class="col-md-2">
+                        <label for="Filtro" class="form-label">Filtrar por:</label>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="d-flex justify-content-end">
+                            <label for="TotalTiposTecnicos" class="form-label">
+                                Total de tipos técnicos: @ListaTiposTecnicos.Count()
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                @*Selección de filtro*@
+                <div class="col-md-2">
+                    <select @bind="filtro" class="form-select">
+                        <option value="id">ID</option>
+                        <option value="descripcion" selected>Descripcion</option>
+                    </select>
+                </div>
+
+                @*Dato a buscar*@
+                <div class="col-md-5">
+                    <div class="input-group">
+                        <input @bind="valorFiltro" class="form-control" placeholder="Escribir dato" />
+                        <button @onclick="Buscar" class="btn btn-outline-primary" type="button">
+                            <span class="bi bi-search"></span> Buscar
+                        </button>
+                    </div>
+                </div>
+
+                @*Restablecer tabla*@
+                <div class="col-md-3">
+                    <button class="btn btn-outline-secondary bi bi-arrow-clockwise" type="button"
+                            @onclick="OnInitializedAsync">
+                        Reiniciar todo
+                    </button>
+                </div>
+
+                @*Botón crear*@
+                <div class="col-md-2 text-end">
+                    <button class="btn btn-success bi bi-person-fill-add" type="button"
+                            @onclick="Crear">
+                        Crear
+                    </button>
+                </div>
+            </div>
+
+            @*Tabla con su lista*@
+            <table class="table table-bordered">
+                <thead class="bg-info text-center text-white">
+                    <tr>
+                        <th>ID</th>
+                        <th>Descripcion</th>
+                        <th>Detalles</th>
+                        <th>Editar</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var tipoTecnico in ListaTiposTecnicos)
+                    {
+                        <tr class="text-center">
+                            <td>@tipoTecnico.TipoTecnicoId</td>
+                            <td>@tipoTecnico.Descripcion</td>
+                            <td>
+                                <button type="button" class="btn btn-outline-info bi bi-journal-text"
+                                        @onclick="()=>Detalles(tipoTecnico.TipoTecnicoId)"></button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-outline-warning bi bi-pencil-square"
+                                        @onclick="()=>Editar(tipoTecnico.TipoTecnicoId)"></button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-outline-danger bi bi-trash"
+                                        @onclick="()=>Eliminar(tipoTecnico.TipoTecnicoId)"></button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@code {
+    public List<TiposTecnicos> ListaTiposTecnicos = new List<TiposTecnicos>();
+    private string filtro = "";
+    private string valorFiltro = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListaTiposTecnicos = await tiposTecnicoService.Listar(e => true);
+        filtro = "descripcion";
+        valorFiltro = "";
+    }
+
+    private async Task Buscar()
+    {
+        if (valorFiltro.Trim() != "")
+        {
+            if (filtro == "id" && int.TryParse(valorFiltro, out int tipoTecnicoId))
+            {
+                ListaTiposTecnicos = await tiposTecnicoService.Listar(t => t.TipoTecnicoId == tipoTecnicoId);
+            }
+            else if (filtro == "descripcion")
+            {
+                ListaTiposTecnicos = await tiposTecnicoService.Listar(t => t.Descripcion
+                    .ToLower()
+                    .Contains(valorFiltro
+                    .ToLower()));
+            }
+        }
+        else
+        {
+            ListaTiposTecnicos = await tiposTecnicoService.Listar(p => true);
+        }
+    }
+
+    public void Crear()
+    {
+        navigation.NavigateTo("/TiposTecnico/Create");
+    }
+
+    public void Detalles(int id)
+    {
+        navigation.NavigateTo($"/TiposTecnico/Details/tipotecnicoid={id}");
+    }
+
+    public void Editar(int id)
+    {
+        navigation.NavigateTo($"/TiposTecnico/Edit/tipotecnicoid={id}");
+    }
+
+    public void Eliminar(int id)
+    {
+        navigation.NavigateTo($"/TiposTecnico/Delete/tipotecnicoid={id}");
+    }
+}
