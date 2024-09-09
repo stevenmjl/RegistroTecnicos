@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RegistroTecnicos.Models;
 
@@ -15,4 +16,8 @@ public class Tecnicos
     [Required(ErrorMessage = "Debe tener un sueldo correcto.")]
     [Range(0.01, 10000000, ErrorMessage = "Ingrese un sueldo mayor a 0 y menor a 10,000,000")]
     public double SueldoHora { get; set; }
+
+    [ForeignKey("TiposTecnicos")]
+    [Required(ErrorMessage = "Seleccione un tipo de tecnico.")]
+    public int TipoTecnicoId { get; set; }
 }
