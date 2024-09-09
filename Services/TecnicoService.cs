@@ -17,12 +17,12 @@ public class TecnicoService
     // Métodos del servicio
     private async Task<bool> Existe(int tecnicoId)
     {
-        return await _contexto.Tecnico
+        return await _contexto.Tecnicos
             .AnyAsync(t => t.TecnicoId == tecnicoId);
     }
     public async Task<bool> Existe(int tecnicoId, string? nombres)
     {
-        return await _contexto.Tecnico
+        return await _contexto.Tecnicos
             .AnyAsync(t => t.TecnicoId != tecnicoId && t.Nombres.ToLower().Equals(nombres.ToLower()));
     }
     public async Task<bool> Guardar(Tecnicos tecnico)
@@ -35,7 +35,7 @@ public class TecnicoService
     }
     private async Task<bool> Insertar(Tecnicos tecnico)
     {
-        _contexto.Tecnico.Add(tecnico);
+        _contexto.Tecnicos.Add(tecnico);
         return await _contexto
             .SaveChangesAsync() > 0;
     }
@@ -47,20 +47,20 @@ public class TecnicoService
     }
     public async Task<bool> Eliminar(int tecnicoId)
     {
-        var tecnico = await _contexto.Tecnico
+        var tecnico = await _contexto.Tecnicos
             .Where(t => t.TecnicoId == tecnicoId)
             .ExecuteDeleteAsync();
         return tecnico > 0;
     }
     public async Task<Tecnicos?> BuscarId(int tecnicoId)
     {
-        return await _contexto.Tecnico
+        return await _contexto.Tecnicos
             .AsNoTracking()
             .FirstOrDefaultAsync(t => t.TecnicoId == tecnicoId);
     }
     public async Task<List<Tecnicos>> Listar(Expression<Func<Tecnicos, bool>> criterio)
     {
-        return await _contexto.Tecnico
+        return await _contexto.Tecnicos
             .AsNoTracking()
             .Where(criterio)
             .ToListAsync();
@@ -69,7 +69,7 @@ public class TecnicoService
     // Usado en la visualización de la tabla técnicos
     public async Task<int> UltimoId()
     {
-        var ultimoTecnico = await _contexto.Tecnico
+        var ultimoTecnico = await _contexto.Tecnicos
             .OrderByDescending(t => t.TecnicoId)
             .FirstOrDefaultAsync();
         return ultimoTecnico != null ? ultimoTecnico.TecnicoId : 0;
