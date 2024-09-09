@@ -58,6 +58,16 @@ public class TiposTecnicoService
             .AsNoTracking()
             .FirstOrDefaultAsync(t => t.TipoTecnicoId == tipoTecnicoId);
     }
+
+    public async Task<String?> BuscarDescripcion(int tipoTecnicoId)
+    {
+        var descripcion = await _contexto.TiposTecnicos
+            .AsNoTracking()
+            .FirstOrDefaultAsync(t => t.TipoTecnicoId == tipoTecnicoId);
+
+        return descripcion?.Descripcion;
+    }
+
     public async Task<List<TiposTecnicos>> Listar(Expression<Func<TiposTecnicos, bool>> criterio)
     {
         return await _contexto.TiposTecnicos
