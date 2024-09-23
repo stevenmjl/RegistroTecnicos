@@ -1,6 +1,7 @@
 ﻿@page "/Tecnico/Delete/tecnicoid={idTecnico:int}"
 @rendermode InteractiveServer
 @inject TecnicoService tecnicoService
+@inject TiposTecnicoService tiposTecnicoService
 @inject NavigationManager navigation
 
 <PageTitle>Detalles</PageTitle>
@@ -28,6 +29,7 @@
                 <CardBody>
                     <CardText>@Tecnico.Nombres</CardText>
                     <CardText>Sueldo hora: @Tecnico.SueldoHora.ToString("N2")</CardText>
+                    <CardText>Descrici&oacute;n: @DescripcionTecnico</CardText>
                 </CardBody>
             </Card>
 
@@ -57,11 +59,13 @@
     public Tecnicos? Tecnico { get; set; } = new Tecnicos();
     [Parameter]
     public int idTecnico { get; set; }
+    public string? DescripcionTecnico { get; set; }  // Variable para la descripción
     List<ToastMessage> Mensajes = new List<ToastMessage>();
 
     protected override async Task OnInitializedAsync()
     {
         Tecnico = await tecnicoService.BuscarId(idTecnico);
+        DescripcionTecnico = await tiposTecnicoService.BuscarDescripcion(Tecnico.TipoTecnicoId);
     }
 
     public async Task Eliminar()
