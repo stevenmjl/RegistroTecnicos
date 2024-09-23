@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using RegistroTecnicos.Components;
 using RegistroTecnicos.DAL;
+using RegistroTecnicos.Models;
 using RegistroTecnicos.Services;
 
 namespace RegistroTecnicos
@@ -24,6 +25,7 @@ namespace RegistroTecnicos
             // Inyectando Services
             builder.Services.AddScoped<TecnicoService>();
             builder.Services.AddScoped<TiposTecnicoService>();
+            builder.Services.AddScoped<PrioridadService>();
 
             // Implementando el Bootstrap
             builder.Services.AddBlazorBootstrap();
