@@ -17,7 +17,7 @@ public class Tecnicos
     [Range(0.01, 10000000, ErrorMessage = "Ingrese un sueldo mayor a 0 y menor a 10,000,000")]
     public double SueldoHora { get; set; }
 
-    [ForeignKey("TiposTecnicos")]
     [Required(ErrorMessage = "Seleccione un tipo de tecnico.")]
+    [Range(1, int.MaxValue, ErrorMessage = "Seleccione un tipo valido.")]
     public int TipoTecnicoId { get; set; }
 }
