@@ -1,6 +1,7 @@
 ﻿@page "/Tecnico/Index"
 @rendermode InteractiveServer
 @inject TecnicoService tecnicoService
+@inject TiposTecnicoService tiposTecnicoService
 @inject NavigationManager navigation
 
 <PageTitle>T&eacute;cnicos</PageTitle>
@@ -73,6 +74,7 @@
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Sueldo hora</th>
+                        <th>Descripción</th>
                         <th>Detalles</th>
                         <th>Editar</th>
                         <th>Eliminar</th>
@@ -85,6 +87,7 @@
                             <td>@tecnico.TecnicoId</td>
                             <td>@tecnico.Nombres</td>
                             <td>@tecnico.SueldoHora.ToString("N2")</td>
+                            <td>@DescripcionesTiposTecnico[tecnico.TipoTecnicoId]</td>
                             <td>
                                 <button type="button" class="btn btn-outline-info bi bi-journal-text"
                                         @onclick="()=>Detalles(tecnico.TecnicoId)"></button>
@@ -109,12 +112,23 @@
     public List<Tecnicos> ListaTecnicos = new List<Tecnicos>();
     private string filtro = "";
     private string valorFiltro = "";
+    private Dictionary<int, string?> DescripcionesTiposTecnico = new(); // Diccionario para almacenar descripciones
 
     protected override async Task OnInitializedAsync()
     {
         ListaTecnicos = await tecnicoService.Listar(e => true);
+        await CargarDescripcionesTipos();
         filtro = "nombres";
         valorFiltro = "";
+    }
+    private async Task CargarDescripcionesTipos()
+    {
+        // Llenar el diccionario con descripciones de los técnicos
+        foreach (var tecnico in ListaTecnicos)
+        {
+            var descripcion = await tiposTecnicoService.BuscarDescripcion(tecnico.TipoTecnicoId);
+            DescripcionesTiposTecnico[tecnico.TipoTecnicoId] = descripcion;
+        }
     }
 
     private async Task Buscar()
