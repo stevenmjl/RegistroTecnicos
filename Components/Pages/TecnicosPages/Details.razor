@@ -1,6 +1,7 @@
 ﻿@page "/Tecnico/Details/tecnicoid={idTecnico:int}"
 @rendermode InteractiveServer
 @inject TecnicoService tecnicoService
+@inject TiposTecnicoService tiposTecnicoService
 @inject NavigationManager navigation
 
 <PageTitle>Detalles</PageTitle>
@@ -25,6 +26,7 @@
                 <CardBody>
                     <CardText>@Tecnico.Nombres</CardText>
                     <CardText>Sueldo: @Tecnico.SueldoHora.ToString("N2")</CardText>
+                    <CardText>Descrici&oacute;n: @DescripcionTecnico</CardText>
                 </CardBody>
             </Card>
         </div>
@@ -44,10 +46,12 @@
     public Tecnicos? Tecnico { get; set; } = new Tecnicos();
     [Parameter]
     public int idTecnico { get; set; }
+    public string? DescripcionTecnico { get; set; }  // Variable para la descripción
 
     protected override async Task OnInitializedAsync()
     {
         Tecnico = await tecnicoService.BuscarId(idTecnico);
+        DescripcionTecnico = await tiposTecnicoService.BuscarDescripcion(Tecnico.TipoTecnicoId);
     }
 
     public void Volver() => navigation.NavigateTo("/Tecnico/Index");
