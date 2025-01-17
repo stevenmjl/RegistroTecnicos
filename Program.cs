@@ -24,6 +24,8 @@ namespace RegistroTecnicos
             // Inyectamos el Service de Tecnicos
             builder.Services.AddScoped<TecnicosService>();
 
+            builder.Services.AddBlazorBootstrap();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
