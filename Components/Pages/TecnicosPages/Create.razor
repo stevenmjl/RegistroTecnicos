@@ -19,32 +19,30 @@
                 </div>
             </div>
 
-            @*Vista general*@
+            @* Vista general*@
             <div class="card-body">
-                <div class="col-1">
-                    @*Id*@
+                @* Id *@
+                <div class="mb-3 col-2">
                     <label class="form-label" for="Id">Id</label>
-                    <InputNumber id="Id" class="form-control text-center" readonly
+                    <InputNumber id="Id" class="form-control text-left" readonly
                                  @bind-Value="UltimoTecnico"></InputNumber>
                 </div>
 
-                <div class="row">
-                    @*Nombres*@
-                    <div class="col-4">
-                        <label class="form-label" for="Nombres">Nombres</label>
-                        <InputText id="Nombres" class="form-control"
-                                   @bind-Value="Tecnico.Nombres" placeholder="Ej: Angela Santana López">
-                        </InputText>
-                        <ValidationMessage For="@(()=>Tecnico.Nombres)"></ValidationMessage>
-                    </div>
+                @* Nombres *@
+                <div class="mb-3 col-4">
+                    <label class="form-label" for="Nombres">Nombres</label>
+                    <InputText id="Nombres" class="form-control"
+                               @bind-Value="Tecnico.Nombres" placeholder="Ej: Angela Santana López">
+                    </InputText>
+                    <ValidationMessage For="@(() => Tecnico.Nombres)"></ValidationMessage>
+                </div>
 
-                    @*Sueldo Hora*@
-                    <div class="col-3">
-                        <label class="form-label" for="SueldoHora">Sueldo hora</label>
-                        <InputNumber id="SueldoHora" class="form-control"
-                                     @bind-Value="Tecnico.SueldoHora"></InputNumber>
-                        <ValidationMessage For="@(() => Tecnico.SueldoHora)"></ValidationMessage>
-                    </div>
+                @* Sueldo Hora *@
+                <div class="mb-3 col-2">
+                    <label class="form-label" for="SueldoHora">Sueldo hora</label>
+                    <InputNumber id="SueldoHora" class="form-control"
+                                 @bind-Value="Tecnico.SueldoHora"></InputNumber>
+                    <ValidationMessage For="@(() => Tecnico.SueldoHora)"></ValidationMessage>
                 </div>
             </div>
 
