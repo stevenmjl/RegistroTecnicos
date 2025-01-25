@@ -12,14 +12,14 @@
 
     <div class="container">
         <div class="card shadow-lg">
-            @*Titulo de página*@
+            @* Titulo de página *@
             <div class="card-header text-white text-center">
                 <div class="bg-warning rounded">
                     <h1>Editar T&eacute;cnico</h1>
                 </div>
             </div>
 
-            @* Vista general *@
+            @* Carta *@
             <div class="card-body">
                 @* Id *@
                 <div class="mb-3 col-2">
@@ -45,10 +45,9 @@
                 </div>
             </div>
 
-            @*Botones de control*@
+            @* Botones de control *@
             <div class="card-footer d-flex justify-content-center">
-                <button class="btn btn-warning bi bi-pencil-square"
-                        type="submit" style="margin-right: 10px;">
+                <button class="btn btn-warning bi bi-pencil-square">
                     Editar
                 </button>
                 <button class="btn btn-secondary" type="button"
@@ -74,6 +73,8 @@
             // Desvincula la entidad si ya estaba rastreada
             tecnicosService.DesvincularLocal(tecnicoExistente.TecnicoId);
             Tecnico = tecnicoExistente;
+        }else{
+            navigation.NavigateTo("/Tecnico/Index");
         }
     }
 
