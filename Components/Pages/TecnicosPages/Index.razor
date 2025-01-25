@@ -7,30 +7,30 @@
 
 <div class="container">
     <div class="card shadow-lg">
-        @*Titulo*@
+        @* Título *@
         <div class="card-header text-white text-center">
             <div class="bg-primary rounded">
-                <h1>Consulta de T&eacute;cnicos</h1>
+                <h1>Consulta de t&eacute;cnicos</h1>
             </div>
         </div>
 
         <div class="card-body">
             <div class="row mb-2 align-items-end">
-                @*Textos de apoyo*@
+                @* Textos de apoyo *@
                 <div class="row align-items-center">
-                    <div class="col-md-2">
+                    <div class="col-4 col-md-2">
                         <label for="Filtro" class="form-label">Filtrar por:</label>
                     </div>
-                    <div class="col-md-10">
-                        <div class="d-flex justify-content-end">
-                            <label for="TotalTecnicos" class="form-label">
-                                Total de técnicos: @ListaTecnicos.Count()
-                            </label>
-                        </div>
+                    <div class="col-4 col-md-2">
+                        <label for="Busqueda" class="form-label">B&uacute;squeda:</label>
+                    </div>
+                    <div class="col-4 col-md-8 text-end">
+                        <label for="TotalTecnicos" class="form-label">
+                         Total de técnicos: @ListaTecnicos.Count()</label>
                     </div>
                 </div>
 
-                @*Selección de filtro*@
+                @* Selección de filtro *@
                 <div class="col-md-2">
                     <select @bind="filtro" class="form-select">
                         <option value="id">ID</option>
@@ -38,7 +38,7 @@
                     </select>
                 </div>
 
-                @*Filtro completo*@
+                @* Filtro de búsqueda *@
                 <div class="col-md-8">
                     <div class="input-group">
                         <input @bind="valorFiltro" class="form-control" placeholder="Escribir dato" />
@@ -51,21 +51,21 @@
                     </div>
                 </div>
 
-                @*Botón crear*@
+                @* Botón crear *@
                 <div class="col-md-2 text-end">
-                    <button class="btn btn-success bi bi-person-fill-add" type="button"
+                    <button class="btn btn-success bi bi-plus-circle" type="button"
                             @onclick="Crear">
                         Crear
                     </button>
                 </div>
             </div>
 
-            @*Tabla con su lista*@
+            @* Tabla con su lista *@
             <table class="table table-bordered">
                 <thead class="bg-info text-center text-white">
                     <tr>
                         <th>ID</th>
-                        <th>Nombre</th>
+                        <th>Nombres</th>
                         <th>Sueldo hora</th>
                         <th>Editar</th>
                         <th>Eliminar</th>
