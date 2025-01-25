@@ -21,8 +21,9 @@ namespace RegistroTecnicos
             // Agregamos el contexto al builder con el ConStr
             builder.Services.AddDbContextFactory<Contexto>(o => o.UseSqlServer(ConStr));
 
-            // Inyectamos el Service de Tecnicos
+            // Inyectamos todos los servicios
             builder.Services.AddScoped<TecnicosService>();
+            builder.Services.AddScoped<ClientesService>();
 
             builder.Services.AddBlazorBootstrap();
 
