@@ -1,0 +1,162 @@
+﻿@page "/Cliente/Index"
+@rendermode InteractiveServer
+@inject ClientesService clientesService
+@inject NavigationManager navigation
+
+<PageTitle>Clientes</PageTitle>
+
+<div class="container">
+    <div class="card shadow-lg">
+        @* Título *@
+        <div class="card-header text-white text-center">
+            <div class="bg-primary rounded">
+                <h1>Consulta de clientes</h1>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row mb-2 align-items-end">
+                @* Textos de apoyo *@
+                <div class="row align-items-center">
+                    <div class="col-4 col-md-2">
+                        <label for="Filtro" class="form-label">Filtrar por:</label>
+                    </div>
+                    <div class="col-4 col-md-2">
+                        <label for="Busqueda" class="form-label">B&uacute;squeda:</label>
+                    </div>
+                    <div class="col-4 col-md-8 text-end">
+                        <label for="TotalClientes" class="form-label">
+                         Total de clientes: @ListaClientes.Count()</label>
+                    </div>
+                </div>
+
+                @* Selección de filtro *@
+                <div class="col-md-2">
+                    <select @bind="filtro" class="form-select">
+                        <option value="id">ID</option>
+                        <option value="nombres" selected>Nombres</option>
+                    </select>
+                </div>
+
+                @* Filtro de búsqueda *@
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <input @bind="valorFiltro" class="form-control" placeholder="Escribir dato" />
+                        <button @onclick="Buscar" class="btn btn-primary" type="button">
+                            <span class="bi bi-search"></span> Buscar
+                        </button>
+                        <button class="btn btn-secondary bi bi-arrow-counterclockwise" type="button"
+                                @onclick="OnInitializedAsync"> Limpiar
+                        </button>
+                    </div>
+                </div>
+
+                @* Botón crear *@
+                <div class="col-md-2 text-end">
+                    <button class="btn btn-success bi bi-plus-circle" type="button"
+                            @onclick="Crear">
+                        Crear
+                    </button>
+                </div>
+            </div>
+
+            @* Tabla con su lista *@
+            <table class="table table-bordered">
+                <thead class="bg-info text-center text-white">
+                    <tr>
+                        <th>ID</th>
+                        <th>Fecha de Ingreso</th>
+                        <th>Nombres</th>
+                        <th>RNC</th>
+                        <th>Límite de Crédito</th>
+                        <th>Técnico</th>
+                        <th>Editar</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var cliente in ListaClientes)
+                    {
+                            <tr class="text-center">
+                                <td>@cliente.ClienteId</td>
+                                <td>@cliente.FechaIngreso.ToString("dd/MM/yyyy")</td>
+                                <td>@cliente.Nombres</td>
+                                <td>@cliente.Rnc</td>
+                                <td>@cliente.LimiteCredito.ToString("C2")</td>
+                                <td>@NombresTecnico.GetValueOrDefault(cliente.TecnicoId, "Técnico no asignado")</td>
+                                <td>
+                                    <button type="button" class="btn btn-warning bi bi-pencil-square"
+                                            @onclick="()=>Editar(cliente.ClienteId)"></button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger bi bi-trash"
+                                            @onclick="()=>Eliminar(cliente.ClienteId)"></button>
+                                </td>
+                            </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@code {
+    public List<Clientes> ListaClientes = new List<Clientes>();
+    private string filtro = "";
+    private string valorFiltro = "";
+    private Dictionary<int, string?> NombresTecnico = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListaClientes = await clientesService.Listar(e => true);
+        filtro = "nombres";
+        valorFiltro = "";
+        await CargarNombresTecnicos();
+    }
+
+    private async Task CargarNombresTecnicos()
+    {
+        foreach (var cliente in ListaClientes)
+        {
+            var nombres = await clientesService.BuscarNombresTecnico(cliente.TecnicoId);
+            NombresTecnico[cliente.TecnicoId] = nombres;
+        }
+    }
+
+    private async Task Buscar()
+    {
+        if (valorFiltro.Trim() != "")
+        {
+            if (filtro == "id" && int.TryParse(valorFiltro, out int clienteId))
+            {
+                ListaClientes = await clientesService.Listar(c => c.ClienteId == clienteId);
+            }
+            else if (filtro == "nombres")
+            {
+                ListaClientes = await clientesService.Listar(c => c.Nombres
+                    .ToLower()
+                    .Contains(valorFiltro
+                    .ToLower()));
+            }
+        }
+        else
+        {
+            ListaClientes = await clientesService.Listar(p => true);
+        }
+    }
+
+    public void Crear()
+    {
+        navigation.NavigateTo("/Cliente/Create");
+    }
+
+    public void Editar(int id)
+    {
+        navigation.NavigateTo($"/Cliente/Edit/clienteid={id}");
+    }
+
+    public void Eliminar(int id)
+    {
+        navigation.NavigateTo($"/Cliente/Delete/clienteid={id}");
+    }
+}
