@@ -65,11 +65,12 @@
                 <thead class="bg-info text-center text-white">
                     <tr>
                         <th>ID</th>
-                        <th>Fecha de Ingreso</th>
                         <th>Nombres</th>
                         <th>RNC</th>
-                        <th>Límite de Crédito</th>
-                        <th>Técnico</th>
+                        <th>Fecha Ingreso</th>
+                        <th>Direcci&oacute;n</th>
+                        <th>Cr&eacute;dito l&iacute;mite</th>
+                        <th>T&eacute;cnico encargado</th>
                         <th>Editar</th>
                         <th>Eliminar</th>
                     </tr>
@@ -79,9 +80,10 @@
                     {
                             <tr class="text-center">
                                 <td>@cliente.ClienteId</td>
-                                <td>@cliente.FechaIngreso.ToString("dd/MM/yyyy")</td>
                                 <td>@cliente.Nombres</td>
                                 <td>@cliente.Rnc</td>
+                                <td>@cliente.FechaIngreso.ToString("dd/MM/yyyy")</td>
+                                <td>@cliente.Direccion</td>
                                 <td>@cliente.LimiteCredito.ToString("C2")</td>
                                 <td>@NombresTecnico.GetValueOrDefault(cliente.TecnicoId, "Técnico no asignado")</td>
                                 <td>
