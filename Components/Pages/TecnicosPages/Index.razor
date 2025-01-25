@@ -14,10 +14,9 @@
             </div>
         </div>
 
-        @*Vista general*@
         <div class="card-body">
             <div class="row mb-2 align-items-end">
-                @*Zona de Filtro*@
+                @*Textos de apoyo*@
                 <div class="row align-items-center">
                     <div class="col-md-2">
                         <label for="Filtro" class="form-label">Filtrar por:</label>
@@ -39,22 +38,17 @@
                     </select>
                 </div>
 
-                @*Dato a buscar*@
-                <div class="col-md-5">
+                @*Filtro completo*@
+                <div class="col-md-8">
                     <div class="input-group">
                         <input @bind="valorFiltro" class="form-control" placeholder="Escribir dato" />
-                        <button @onclick="Buscar" class="btn btn-outline-primary" type="button">
+                        <button @onclick="Buscar" class="btn btn-primary" type="button">
                             <span class="bi bi-search"></span> Buscar
                         </button>
+                        <button class="btn btn-secondary bi bi-arrow-counterclockwise" type="button"
+                                @onclick="OnInitializedAsync"> Limpiar
+                        </button>
                     </div>
-                </div>
-
-                @*Restablecer tabla*@
-                <div class="col-md-3">
-                    <button class="btn btn-outline-secondary bi bi-arrow-clockwise" type="button"
-                            @onclick="OnInitializedAsync">
-                        Reiniciar todo
-                    </button>
                 </div>
 
                 @*Botón crear*@
@@ -85,11 +79,11 @@
                             <td>@tecnico.Nombres</td>
                             <td>@tecnico.SueldoHora.ToString("N2")</td>
                             <td>
-                                <button type="button" class="btn btn-outline-warning bi bi-pencil-square"
+                                <button type="button" class="btn btn-warning bi bi-pencil-square"
                                         @onclick="()=>Editar(tecnico.TecnicoId)"></button>
                             </td>
                             <td>
-                                <button type="button" class="btn btn-outline-danger bi bi-trash"
+                                <button type="button" class="btn btn-danger bi bi-trash"
                                         @onclick="()=>Eliminar(tecnico.TecnicoId)"></button>
                             </td>
                         </tr>
