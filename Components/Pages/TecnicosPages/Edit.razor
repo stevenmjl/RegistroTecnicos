@@ -12,45 +12,42 @@
 
     <div class="container">
         <div class="card shadow-lg">
-            @*Titulo de página*@
+            @* Titulo de página *@
             <div class="card-header text-white text-center">
                 <div class="bg-warning rounded">
-                    <h1>Editar T&eacute;cnico</h1>
+                    <h1>Editar t&eacute;cnico</h1>
                 </div>
             </div>
 
-            @*Vista general*@
+            @* Cuerpo de página *@
             <div class="card-body">
-                <div class="col-1">
-                    @*Id*@
-                    <label class="form-label" for="Id">Id</label>
-                    <InputNumber id="Id" class="form-control text-center" readonly
+                @* Id *@
+                <div class="mb-3 col-2">
+                    <label class="form-label" for="Id">ID</label>
+                    <InputNumber id="Id" class="form-control text-left" readonly
                                  @bind-Value="Tecnico.TecnicoId"></InputNumber>
                 </div>
 
-                <div class="row">
-                    @*Nombres*@
-                    <div class="col-4">
-                        <label class="form-label" for="Nombres">Nombres</label>
-                        <InputText id="Nombres" class="form-control"
-                                   @bind-Value="Tecnico.Nombres" placeholder="Ej: Angela Santana"></InputText>
-                        <ValidationMessage For="@(()=>Tecnico.Nombres)"></ValidationMessage>
-                    </div>
+                @* Nombres *@
+                <div class="mb-3 col-4">
+                    <label class="form-label" for="Nombres">Nombres</label>
+                    <InputText id="Nombres" class="form-control"
+                               @bind-Value="Tecnico.Nombres" placeholder="Ej: Angela Santana"></InputText>
+                    <ValidationMessage For="@(() => Tecnico.Nombres)"></ValidationMessage>
+                </div>
 
-                    @*Sueldo Hora*@
-                    <div class="col-3">
-                        <label class="form-label" for="SueldoHora">Sueldo hora</label>
-                        <InputNumber id="SueldoHora" class="form-control"
-                                     @bind-Value="Tecnico.SueldoHora"></InputNumber>
-                        <ValidationMessage For="@(()=>Tecnico.SueldoHora)"></ValidationMessage>
-                    </div>
+                @* Sueldo Hora *@
+                <div class="mb-3 col-2">
+                    <label class="form-label" for="SueldoHora">Sueldo hora</label>
+                    <InputNumber id="SueldoHora" class="form-control"
+                                 @bind-Value="Tecnico.SueldoHora"></InputNumber>
+                    <ValidationMessage For="@(() => Tecnico.SueldoHora)"></ValidationMessage>
                 </div>
             </div>
 
-            @*Botones de control*@
+            @* Botones de control *@
             <div class="card-footer d-flex justify-content-center">
-                <button class="btn btn-warning bi bi-pencil-square"
-                        type="submit" style="margin-right: 10px;">
+                <button class="btn btn-warning bi bi-pencil-square">
                     Editar
                 </button>
                 <button class="btn btn-secondary" type="button"
@@ -76,6 +73,8 @@
             // Desvincula la entidad si ya estaba rastreada
             tecnicosService.DesvincularLocal(tecnicoExistente.TecnicoId);
             Tecnico = tecnicoExistente;
+        }else{
+            navigation.NavigateTo("/Tecnico/Index");
         }
     }
 

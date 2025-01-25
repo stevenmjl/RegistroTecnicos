@@ -7,31 +7,30 @@
 
 <div class="container">
     <div class="card shadow-lg">
-        @*Titulo*@
+        @* Título *@
         <div class="card-header text-white text-center">
             <div class="bg-primary rounded">
-                <h1>Consulta de T&eacute;cnicos</h1>
+                <h1>Consulta de t&eacute;cnicos</h1>
             </div>
         </div>
 
-        @*Vista general*@
         <div class="card-body">
             <div class="row mb-2 align-items-end">
-                @*Zona de Filtro*@
+                @* Textos de apoyo *@
                 <div class="row align-items-center">
-                    <div class="col-md-2">
+                    <div class="col-4 col-md-2">
                         <label for="Filtro" class="form-label">Filtrar por:</label>
                     </div>
-                    <div class="col-md-10">
-                        <div class="d-flex justify-content-end">
-                            <label for="TotalTecnicos" class="form-label">
-                                Total de técnicos: @ListaTecnicos.Count()
-                            </label>
-                        </div>
+                    <div class="col-4 col-md-2">
+                        <label for="Busqueda" class="form-label">B&uacute;squeda:</label>
+                    </div>
+                    <div class="col-4 col-md-8 text-end">
+                        <label for="TotalTecnicos" class="form-label">
+                         Total de técnicos: @ListaTecnicos.Count()</label>
                     </div>
                 </div>
 
-                @*Selección de filtro*@
+                @* Selección de filtro *@
                 <div class="col-md-2">
                     <select @bind="filtro" class="form-select">
                         <option value="id">ID</option>
@@ -39,41 +38,35 @@
                     </select>
                 </div>
 
-                @*Dato a buscar*@
-                <div class="col-md-5">
+                @* Filtro de búsqueda *@
+                <div class="col-md-8">
                     <div class="input-group">
                         <input @bind="valorFiltro" class="form-control" placeholder="Escribir dato" />
-                        <button @onclick="Buscar" class="btn btn-outline-primary" type="button">
+                        <button @onclick="Buscar" class="btn btn-primary" type="button">
                             <span class="bi bi-search"></span> Buscar
+                        </button>
+                        <button class="btn btn-secondary bi bi-arrow-counterclockwise" type="button"
+                                @onclick="OnInitializedAsync"> Limpiar
                         </button>
                     </div>
                 </div>
 
-                @*Restablecer tabla*@
-                <div class="col-md-3">
-                    <button class="btn btn-outline-secondary bi bi-arrow-clockwise" type="button"
-                            @onclick="OnInitializedAsync">
-                        Reiniciar todo
-                    </button>
-                </div>
-
-                @*Botón crear*@
+                @* Botón crear *@
                 <div class="col-md-2 text-end">
-                    <button class="btn btn-success bi bi-person-fill-add" type="button"
+                    <button class="btn btn-success bi bi-plus-circle" type="button"
                             @onclick="Crear">
                         Crear
                     </button>
                 </div>
             </div>
 
-            @*Tabla con su lista*@
+            @* Tabla con su lista *@
             <table class="table table-bordered">
                 <thead class="bg-info text-center text-white">
                     <tr>
                         <th>ID</th>
-                        <th>Nombre</th>
+                        <th>Nombres</th>
                         <th>Sueldo hora</th>
-                        <th>Detalles</th>
                         <th>Editar</th>
                         <th>Eliminar</th>
                     </tr>
@@ -86,15 +79,11 @@
                             <td>@tecnico.Nombres</td>
                             <td>@tecnico.SueldoHora.ToString("N2")</td>
                             <td>
-                                <button type="button" class="btn btn-outline-info bi bi-journal-text"
-                                        @onclick="()=>Detalles(tecnico.TecnicoId)"></button>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-outline-warning bi bi-pencil-square"
+                                <button type="button" class="btn btn-warning bi bi-pencil-square"
                                         @onclick="()=>Editar(tecnico.TecnicoId)"></button>
                             </td>
                             <td>
-                                <button type="button" class="btn btn-outline-danger bi bi-trash"
+                                <button type="button" class="btn btn-danger bi bi-trash"
                                         @onclick="()=>Eliminar(tecnico.TecnicoId)"></button>
                             </td>
                         </tr>
@@ -142,11 +131,6 @@
     public void Crear()
     {
         navigation.NavigateTo("/Tecnico/Create");
-    }
-
-    public void Detalles(int id)
-    {
-        navigation.NavigateTo($"/Tecnico/Details/tecnicoid={id}");
     }
 
     public void Editar(int id)
