@@ -73,7 +73,6 @@
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Sueldo hora</th>
-                        <th>Detalles</th>
                         <th>Editar</th>
                         <th>Eliminar</th>
                     </tr>
@@ -85,10 +84,6 @@
                             <td>@tecnico.TecnicoId</td>
                             <td>@tecnico.Nombres</td>
                             <td>@tecnico.SueldoHora.ToString("N2")</td>
-                            <td>
-                                <button type="button" class="btn btn-outline-info bi bi-journal-text"
-                                        @onclick="()=>Detalles(tecnico.TecnicoId)"></button>
-                            </td>
                             <td>
                                 <button type="button" class="btn btn-outline-warning bi bi-pencil-square"
                                         @onclick="()=>Editar(tecnico.TecnicoId)"></button>
@@ -142,11 +137,6 @@
     public void Crear()
     {
         navigation.NavigateTo("/Tecnico/Create");
-    }
-
-    public void Detalles(int id)
-    {
-        navigation.NavigateTo($"/Tecnico/Details/tecnicoid={id}");
     }
 
     public void Editar(int id)
