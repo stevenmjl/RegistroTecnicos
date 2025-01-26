@@ -14,11 +14,13 @@ namespace RegistroTecnicos.Services
                 .AnyAsync(c => c.ClienteId == clienteId);
         }
 
-        public async Task<bool> Existe(int clienteId, string? nombres)
+        public async Task<bool> Existe(int clienteId, string? nombres, string? rnc)
         {
             await using var contexto = await DbFactory.CreateDbContextAsync();
             return await contexto.Clientes
-                .AnyAsync(c => c.ClienteId != clienteId && c.Nombres.ToLower().Equals(nombres.ToLower()));
+                .AnyAsync(c => c.ClienteId != clienteId 
+                && (c.Nombres.ToLower() == nombres.ToLower() 
+                || c.Rnc == rnc));
         }
 
         private async Task<bool> Insertar(Clientes cliente)

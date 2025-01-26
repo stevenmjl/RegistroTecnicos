@@ -79,7 +79,7 @@
                         <option value="">Seleccione un t&eacute;cnico:</option>
                         @foreach (var tecnico in Tecnicos)
                         {
-                                <option value="@tecnico.TecnicoId">@tecnico.Nombres</option>
+                                    <option value="@tecnico.TecnicoId">@tecnico.Nombres</option>
                         }
                     </InputSelect>
                     <ValidationMessage For="@(() => Cliente.TecnicoId)"></ValidationMessage>
@@ -131,13 +131,15 @@
         }
         else
         {
-            MostrarMensaje(ToastType.Warning, "Ya existe un cliente con este nombre.");
+            MostrarMensaje(ToastType.Warning,
+                "Ya existe un cliente con el mismo nombre o RNC.");
         }
     }
 
+
     public async Task<bool> Validar()
     {
-        var existe = await clientesService.Existe(Cliente.ClienteId, Cliente.Nombres);
+        var existe = await clientesService.Existe(Cliente.ClienteId, Cliente.Nombres, Cliente.Rnc);
         return existe;
     }
 
