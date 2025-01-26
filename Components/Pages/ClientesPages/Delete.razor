@@ -1,9 +1,9 @@
-﻿@page "/Tecnico/Delete/tecnicoid={idTecnico:int}"
+﻿@page "/Cliente/Delete/clienteid={idCliente:int}"
 @rendermode InteractiveServer
-@inject TecnicosService tecnicosService
+@inject ClientesService clientesService
 @inject NavigationManager navigation
 
-<PageTitle>Eliminar t&eacute;cnico</PageTitle>
+<PageTitle>Eliminar cliente</PageTitle>
 
 <Toasts class="p-3" Messages="Mensajes" Placement="ToastsPlacement.TopRight"
         AutoHide="true" Delay="5000" />
@@ -13,7 +13,7 @@
         @* Título *@
         <div class="card-header text-white text-center">
             <div class="bg-danger rounded">
-                <h1>Eliminar t&eacute;cnico</h1>
+                <h1>Eliminar cliente</h1>
             </div>
         </div>
 
@@ -22,12 +22,15 @@
             <Card Color="CardColor.Danger" Class="mb-2" Style="width:24rem;">
                 <CardHeader>
                     <CardTitle>
-                        ID: @Tecnico.TecnicoId
+                        ID: @Cliente.ClienteId
                     </CardTitle>
                 </CardHeader>
                 <CardBody>
-                    <CardText>@Tecnico.Nombres</CardText>
-                    <CardText>Sueldo hora: @Tecnico.SueldoHora.ToString("C2")</CardText>
+                    <CardText>@Cliente.Nombres</CardText>
+                    <CardText>RNC: @Cliente.Rnc</CardText>
+                    <CardText>Fecha ingreso: @Cliente.FechaIngreso.ToString("dd/MM/yyyy")</CardText>
+                    <CardText>Dirección: @Cliente.Direccion</CardText>
+                    <CardText>Límite de Crédito: @Cliente.LimiteCredito.ToString("C2")</CardText>
                 </CardBody>
             </Card>
         </div>
@@ -47,18 +50,18 @@
 </div>
 
 @code {
-    public Tecnicos? Tecnico { get; set; } = new Tecnicos();
+    public Clientes? Cliente { get; set; } = new Clientes();
     [Parameter]
-    public int idTecnico { get; set; }
+    public int idCliente { get; set; }
     List<ToastMessage> Mensajes = new List<ToastMessage>();
 
     protected override async Task OnInitializedAsync()
     {
-        Tecnico = await tecnicosService.Buscar(idTecnico);
+        Cliente = await clientesService.Buscar(idCliente);
 
-        if (Tecnico == null)
+        if (Cliente == null)
         {
-            navigation.NavigateTo("/Tecnico/Index");
+            navigation.NavigateTo("/Cliente/Index");
         }
     }
 
@@ -66,22 +69,22 @@
     {
         try
         {
-            var eliminado = await tecnicosService.Eliminar(idTecnico);
+            var eliminado = await clientesService.Eliminar(idCliente);
 
             if (eliminado)
             {
-                MostrarMensaje(ToastType.Danger, "Técnico eliminado correctamente.");
+                MostrarMensaje(ToastType.Danger, "Cliente eliminado correctamente.");
             }
             else
             {
-                MostrarMensaje(ToastType.Warning, "No se pudo eliminar el técnico. Verifique si está asociado a otros registros.");
+                MostrarMensaje(ToastType.Warning, "No se pudo eliminar el cliente. Verifique si está asociado a otros registros.");
             }
         }
         catch (Exception ex)
         {
             if (ex.Message.Contains("not found", StringComparison.OrdinalIgnoreCase))
             {
-                MostrarMensaje(ToastType.Warning, "El técnico no existe o ya fue eliminado.");
+                MostrarMensaje(ToastType.Warning, "El cliente no existe o ya fue eliminado.");
             }
             else if (ex.Message.Contains("database", StringComparison.OrdinalIgnoreCase))
             {
@@ -108,5 +111,5 @@
             Message = message,
         };
 
-    public void Volver() => navigation.NavigateTo("/Tecnico/Index");
+    public void Volver() => navigation.NavigateTo("/Cliente/Index");
 }

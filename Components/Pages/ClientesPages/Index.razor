@@ -1,16 +1,16 @@
-﻿@page "/Tecnico/Index"
+﻿@page "/Cliente/Index"
 @rendermode InteractiveServer
-@inject TecnicosService tecnicosService
+@inject ClientesService clientesService
 @inject NavigationManager navigation
 
-<PageTitle>T&eacute;cnicos</PageTitle>
+<PageTitle>Clientes</PageTitle>
 
 <div class="container">
     <div class="card shadow-lg">
         @* Título *@
         <div class="card-header text-white text-center">
             <div class="bg-primary rounded">
-                <h1>Consulta de t&eacute;cnicos</h1>
+                <h1>Consulta de clientes</h1>
             </div>
         </div>
 
@@ -25,8 +25,8 @@
                         <label for="Busqueda" class="form-label">B&uacute;squeda:</label>
                     </div>
                     <div class="col-4 col-md-8 text-end">
-                        <label for="TotalTecnicos" class="form-label">
-                         Total de técnicos: @ListaTecnicos.Count()</label>
+                        <label for="TotalClientes" class="form-label">
+                         Total de clientes: @ListaClientes.Count()</label>
                     </div>
                 </div>
 
@@ -34,6 +34,7 @@
                 <div class="col-md-2">
                     <select @bind="filtro" class="form-select">
                         <option value="id">ID</option>
+                        <option value="rnc">RNC</option>
                         <option value="nombres" selected>Nombres</option>
                     </select>
                 </div>
@@ -66,27 +67,35 @@
                     <tr>
                         <th>ID</th>
                         <th>Nombres</th>
-                        <th>Sueldo hora</th>
+                        <th>RNC</th>
+                        <th>Fecha Ingreso</th>
+                        <th>Direcci&oacute;n</th>
+                        <th>Cr&eacute;dito l&iacute;mite</th>
+                        <th>T&eacute;cnico encargado</th>
                         <th>Editar</th>
                         <th>Eliminar</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var tecnico in ListaTecnicos)
+                    @foreach (var cliente in ListaClientes)
                     {
-                        <tr class="text-center">
-                            <td>@tecnico.TecnicoId</td>
-                            <td>@tecnico.Nombres</td>
-                            <td>@tecnico.SueldoHora.ToString("C2")</td>
-                            <td>
-                                <button type="button" class="btn btn-warning bi bi-pencil-square"
-                                        @onclick="()=>Editar(tecnico.TecnicoId)"></button>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-danger bi bi-trash"
-                                        @onclick="()=>Eliminar(tecnico.TecnicoId)"></button>
-                            </td>
-                        </tr>
+                                <tr class="text-center">
+                                    <td>@cliente.ClienteId</td>
+                                    <td>@cliente.Nombres</td>
+                                    <td>@cliente.Rnc</td>
+                                    <td>@cliente.FechaIngreso.ToString("dd/MM/yyyy")</td>
+                                    <td>@cliente.Direccion</td>
+                                    <td>@cliente.LimiteCredito.ToString("C2")</td>
+                                    <td>@NombresTecnico.GetValueOrDefault(cliente.TecnicoId, "Técnico no asignado")</td>
+                                    <td>
+                                        <button type="button" class="btn btn-warning bi bi-pencil-square"
+                                                @onclick="()=>Editar(cliente.ClienteId)"></button>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger bi bi-trash"
+                                                @onclick="()=>Eliminar(cliente.ClienteId)"></button>
+                                    </td>
+                                </tr>
                     }
                 </tbody>
             </table>
@@ -95,28 +104,46 @@
 </div>
 
 @code {
-    public List<Tecnicos> ListaTecnicos = new List<Tecnicos>();
+    public List<Clientes> ListaClientes = new List<Clientes>();
     private string filtro = "";
     private string valorFiltro = "";
+    private Dictionary<int, string?> NombresTecnico = new();
 
     protected override async Task OnInitializedAsync()
     {
-        ListaTecnicos = await tecnicosService.Listar(e => true);
+        ListaClientes = await clientesService.Listar(e => true);
         filtro = "nombres";
         valorFiltro = "";
+        await CargarNombresTecnicos();
+    }
+
+    private async Task CargarNombresTecnicos()
+    {
+        foreach (var cliente in ListaClientes)
+        {
+            var nombres = await clientesService.BuscarNombresTecnico(cliente.TecnicoId);
+            NombresTecnico[cliente.TecnicoId] = nombres;
+        }
     }
 
     private async Task Buscar()
     {
         if (valorFiltro.Trim() != "")
         {
-            if (filtro == "id" && int.TryParse(valorFiltro, out int tecnicoId))
+            if (filtro == "id" && int.TryParse(valorFiltro, out int clienteId))
             {
-                ListaTecnicos = await tecnicosService.Listar(t => t.TecnicoId == tecnicoId);
+                ListaClientes = await clientesService.Listar(c => c.ClienteId == clienteId);
+            }
+            else if (filtro == "rnc")
+            {
+                ListaClientes = await clientesService.Listar(c => c.Rnc
+                    .ToLower()
+                    .Contains(valorFiltro
+                    .ToLower()));
             }
             else if (filtro == "nombres")
             {
-                ListaTecnicos = await tecnicosService.Listar(t => t.Nombres
+                ListaClientes = await clientesService.Listar(c => c.Nombres
                     .ToLower()
                     .Contains(valorFiltro
                     .ToLower()));
@@ -124,22 +151,22 @@
         }
         else
         {
-            ListaTecnicos = await tecnicosService.Listar(p => true);
+            ListaClientes = await clientesService.Listar(p => true);
         }
     }
 
     public void Crear()
     {
-        navigation.NavigateTo("/Tecnico/Create");
+        navigation.NavigateTo("/Cliente/Create");
     }
 
     public void Editar(int id)
     {
-        navigation.NavigateTo($"/Tecnico/Edit/tecnicoid={id}");
+        navigation.NavigateTo($"/Cliente/Edit/clienteid={id}");
     }
 
     public void Eliminar(int id)
     {
-        navigation.NavigateTo($"/Tecnico/Delete/tecnicoid={id}");
+        navigation.NavigateTo($"/Cliente/Delete/clienteid={id}");
     }
 }
