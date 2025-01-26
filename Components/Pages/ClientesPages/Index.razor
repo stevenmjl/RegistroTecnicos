@@ -34,6 +34,7 @@
                 <div class="col-md-2">
                     <select @bind="filtro" class="form-select">
                         <option value="id">ID</option>
+                        <option value="rnc">RNC</option>
                         <option value="nombres" selected>Nombres</option>
                     </select>
                 </div>
@@ -78,23 +79,23 @@
                 <tbody>
                     @foreach (var cliente in ListaClientes)
                     {
-                            <tr class="text-center">
-                                <td>@cliente.ClienteId</td>
-                                <td>@cliente.Nombres</td>
-                                <td>@cliente.Rnc</td>
-                                <td>@cliente.FechaIngreso.ToString("dd/MM/yyyy")</td>
-                                <td>@cliente.Direccion</td>
-                                <td>@cliente.LimiteCredito.ToString("C2")</td>
-                                <td>@NombresTecnico.GetValueOrDefault(cliente.TecnicoId, "Técnico no asignado")</td>
-                                <td>
-                                    <button type="button" class="btn btn-warning bi bi-pencil-square"
-                                            @onclick="()=>Editar(cliente.ClienteId)"></button>
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-danger bi bi-trash"
-                                            @onclick="()=>Eliminar(cliente.ClienteId)"></button>
-                                </td>
-                            </tr>
+                                <tr class="text-center">
+                                    <td>@cliente.ClienteId</td>
+                                    <td>@cliente.Nombres</td>
+                                    <td>@cliente.Rnc</td>
+                                    <td>@cliente.FechaIngreso.ToString("dd/MM/yyyy")</td>
+                                    <td>@cliente.Direccion</td>
+                                    <td>@cliente.LimiteCredito.ToString("C2")</td>
+                                    <td>@NombresTecnico.GetValueOrDefault(cliente.TecnicoId, "Técnico no asignado")</td>
+                                    <td>
+                                        <button type="button" class="btn btn-warning bi bi-pencil-square"
+                                                @onclick="()=>Editar(cliente.ClienteId)"></button>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger bi bi-trash"
+                                                @onclick="()=>Eliminar(cliente.ClienteId)"></button>
+                                    </td>
+                                </tr>
                     }
                 </tbody>
             </table>
@@ -132,6 +133,13 @@
             if (filtro == "id" && int.TryParse(valorFiltro, out int clienteId))
             {
                 ListaClientes = await clientesService.Listar(c => c.ClienteId == clienteId);
+            }
+            else if (filtro == "rnc")
+            {
+                ListaClientes = await clientesService.Listar(c => c.Rnc
+                    .ToLower()
+                    .Contains(valorFiltro
+                    .ToLower()));
             }
             else if (filtro == "nombres")
             {
