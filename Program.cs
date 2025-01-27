@@ -24,6 +24,7 @@ namespace RegistroTecnicos
             // Inyectamos todos los servicios
             builder.Services.AddScoped<TecnicosService>();
             builder.Services.AddScoped<ClientesService>();
+            builder.Services.AddScoped<CiudadesService>();
 
             builder.Services.AddBlazorBootstrap();
 
