@@ -1,0 +1,145 @@
+﻿@page "/Ciudad/Index"
+@rendermode InteractiveServer
+@inject CiudadesService ciudadService
+@inject NavigationManager navigation
+
+<PageTitle>T&eacute;cnicos</PageTitle>
+
+<div class="container">
+    <div class="card shadow-lg">
+        @* Título *@
+        <div class="card-header text-white text-center">
+            <div class="bg-primary rounded">
+                <h1>Consulta de ciudades</h1>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row mb-2 align-items-end">
+                @* Textos de apoyo *@
+                <div class="row align-items-center">
+                    <div class="col-4 col-md-2">
+                        <label for="Filtro" class="form-label">Filtrar por:</label>
+                    </div>
+                    <div class="col-4 col-md-2">
+                        <label for="Busqueda" class="form-label">B&uacute;squeda:</label>
+                    </div>
+                    <div class="col-4 col-md-8 text-end">
+                        <label for="TotalCiudades" class="form-label">
+                            Total de ciudades: @ListaCiudades.Count()
+                        </label>
+                    </div>
+                </div>
+
+                @* Selección de filtro *@
+                <div class="col-md-2">
+                    <select @bind="filtro" class="form-select">
+                        <option value="id">ID</option>
+                        <option value="nombre" selected>Nombre</option>
+                    </select>
+                </div>
+
+                @* Filtro de búsqueda *@
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <input @bind="valorFiltro" class="form-control" placeholder="Escribir dato" />
+                        <button @onclick="Buscar" class="btn btn-primary" type="button">
+                            <span class="bi bi-search"></span> Buscar
+                        </button>
+                        <button class="btn btn-secondary bi bi-arrow-counterclockwise" type="button"
+                                @onclick="OnInitializedAsync">
+                            Limpiar
+                        </button>
+                    </div>
+                </div>
+
+                @* Botón crear *@
+                <div class="col-md-2 text-end">
+                    <button class="btn btn-success bi bi-plus-circle" type="button"
+                            @onclick="Crear">
+                        Crear
+                    </button>
+                </div>
+            </div>
+
+            @* Tabla con su lista *@
+            <table class="table table-bordered">
+                <thead class="bg-info text-center text-white">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Editar</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var ciudad in ListaCiudades)
+                    {
+                        <tr class="text-center">
+                            <td>@ciudad.CiudadId</td>
+                            <td>@ciudad.NombreCiudad</td>
+                            <td>
+                                <button type="button" class="btn btn-warning bi bi-pencil-square"
+                                        @onclick="()=>Editar(ciudad.CiudadId)"></button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger bi bi-trash"
+                                        @onclick="()=>Eliminar(ciudad.CiudadId)"></button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@code {
+    public List<Ciudades> ListaCiudades = new List<Ciudades>();
+    private string filtro = "";
+    private string valorFiltro = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListaCiudades = await ciudadService.Listar(e => true);
+        filtro = "nombre";
+        valorFiltro = "";
+    }
+
+    private async Task Buscar()
+    {
+        if (valorFiltro.Trim() != "")
+        {
+            if (filtro == "id" && int.TryParse(valorFiltro, out int ciudadId))
+            {
+                ListaCiudades = await ciudadService.Listar(t => t.CiudadId == ciudadId);
+            }
+            else if (filtro == "nombre")
+            {
+                ListaCiudades = await ciudadService.Listar(t => t.NombreCiudad
+                    .ToLower()
+                    .Contains(valorFiltro
+                    .ToLower()));
+            }
+        }
+        else
+        {
+            ListaCiudades = await ciudadService.Listar(p => true);
+        }
+    }
+
+    public void Crear()
+    {
+        navigation.NavigateTo("/Ciudad/Create");
+    }
+
+    public void Editar(int id)
+    {
+        navigation.NavigateTo($"/Ciudad/Edit/tecnicoid={id}");
+    }
+
+    public void Eliminar(int id)
+    {
+        navigation.NavigateTo($"/Ciudad/Delete/tecnicoid={id}");
+    }
+}
