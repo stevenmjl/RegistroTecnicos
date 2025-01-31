@@ -111,6 +111,8 @@
         if (Cliente == null)
         {
             navigation.NavigateTo("/Cliente/Index");
+        }else{
+            Tecnicos = await tecnicosService.Listar(t => true); // Obteniendo todos los técnicos
         }
     }
 

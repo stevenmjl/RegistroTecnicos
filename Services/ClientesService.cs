@@ -69,8 +69,8 @@ namespace RegistroTecnicos.Services
         {
             await using var contexto = await DbFactory.CreateDbContextAsync();
             return await contexto.Clientes
+                .Include(c => c.Tecnico) // Incluye los datos del técnico
                 .Where(criterio)
-                .AsNoTracking()
                 .ToListAsync();
         }
 
@@ -81,17 +81,6 @@ namespace RegistroTecnicos.Services
                 .OrderByDescending(c => c.ClienteId)
                 .FirstOrDefaultAsync();
             return ultimoCliente != null ? ultimoCliente.ClienteId : 0;
-        }
-
-        // Función para obtener el nombre del técnico encargado
-        public async Task<string?> BuscarNombresTecnico(int tecnicoId)
-        {
-            await using var contexto = await DbFactory.CreateDbContextAsync();
-            var nombresTecnico = await contexto.Tecnicos
-                .AsNoTracking()
-                .FirstOrDefaultAsync(t => t.TecnicoId == tecnicoId);
-
-            return nombresTecnico?.Nombres;
         }
     }
 }
