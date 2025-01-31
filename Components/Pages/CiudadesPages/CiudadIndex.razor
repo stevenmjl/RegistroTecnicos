@@ -135,11 +135,11 @@
 
     public void Editar(int id)
     {
-        navigation.NavigateTo($"/Ciudad/Edit/ciudadId={id}");
+        navigation.NavigateTo($"/Ciudad/Edit/{id}");
     }
 
     public void Eliminar(int id)
     {
-        navigation.NavigateTo($"/Ciudad/Delete/ciudadId={id}");
+        navigation.NavigateTo($"/Ciudad/Delete/{id}");
     }
 }

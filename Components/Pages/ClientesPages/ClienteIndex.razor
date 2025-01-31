@@ -162,11 +162,11 @@
 
     public void Editar(int id)
     {
-        navigation.NavigateTo($"/Cliente/Edit/clienteid={id}");
+        navigation.NavigateTo($"/Cliente/Edit/{id}");
     }
 
     public void Eliminar(int id)
     {
-        navigation.NavigateTo($"/Cliente/Delete/clienteid={id}");
+        navigation.NavigateTo($"/Cliente/Delete/{id}");
     }
 }
