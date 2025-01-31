@@ -78,14 +78,4 @@ public class TecnicosService(IDbContextFactory<Contexto> DbFactory)
             .FirstOrDefaultAsync();
         return ultimoTecnico != null ? ultimoTecnico.TecnicoId : 0;
     }
-    // Busca en el caché local, Desvincula la entidad del seguimiento si causa interferencia.
-    public async Task DesvincularLocal(int tecnicoId)
-    {
-        await using var contexto = await DbFactory.CreateDbContextAsync();
-        var local = contexto.Set<Tecnicos>().Local.FirstOrDefault(l => l.TecnicoId == tecnicoId);
-       
-        if (local == null)
-            return;
-        contexto.Entry(local).State = EntityState.Detached;
-    }
 }

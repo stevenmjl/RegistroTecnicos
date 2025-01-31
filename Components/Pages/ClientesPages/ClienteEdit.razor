@@ -106,19 +106,12 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var clienteExistente = await clientesService.Buscar(idCliente);
-        if (clienteExistente != null)
-        {
-            // Desvincula la entidad si ya estaba rastreada
-            clientesService.DesvincularLocal(clienteExistente.ClienteId);
-            Cliente = clienteExistente;
-        }
-        else
+        Cliente = await clientesService.Buscar(idCliente);
+
+        if (Cliente == null)
         {
             navigation.NavigateTo("/Cliente/Index");
         }
-
-        Tecnicos = await tecnicosService.Listar(t => true); // Obteniendo todos los técnicos
     }
 
     public async Task Editar()

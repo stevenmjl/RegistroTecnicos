@@ -93,17 +93,5 @@ namespace RegistroTecnicos.Services
 
             return nombresTecnico?.Nombres;
         }
-
-        // Busca en el caché local, Desvincula la entidad del seguimiento si causa interferencia.
-        public async Task DesvincularLocal(int clienteId)
-        {
-            await using var contexto = await DbFactory.CreateDbContextAsync();
-            var local = contexto.Set<Clientes>().Local.FirstOrDefault(l => l.ClienteId == clienteId);
-
-            if (local == null)
-                return;
-
-            contexto.Entry(local).State = EntityState.Detached;
-        }
     }
 }

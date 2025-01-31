@@ -59,13 +59,10 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var ciudadExistente = await ciudadService.Buscar(idCiudad);
-        if (ciudadExistente != null)
+        Ciudad = await ciudadService.Buscar(idCiudad);
+
+        if (Ciudad == null)
         {
-            // Desvincula la entidad si ya estaba rastreada
-            ciudadService.DesvincularLocal(ciudadExistente.CiudadId);
-            Ciudad = ciudadExistente;
-        }else{
             navigation.NavigateTo("/Ciudad/Index");
         }
     }
