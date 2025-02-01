@@ -1,7 +1,6 @@
 ﻿@page "/Ciudad/Create"
 @rendermode InteractiveServer
 @inject CiudadesService ciudadService
-@inject NavigationManager navigation
 
 <PageTitle>Crear ciudad</PageTitle>
 
@@ -24,8 +23,8 @@
                 @* Id *@
                 <div class="mb-3 col-2">
                     <label class="form-label" for="Id">Id</label>
-                    <InputNumber id="Id" class="form-control text-left" readonly
-                                 @bind-Value="UltimaCiudad"></InputNumber>
+                    <InputNumber id="Id" class="form-control text-left"
+                                 readonly @bind-Value="UltimaCiudad"></InputNumber>
                 </div>
 
                 @* Nombre *@
@@ -40,13 +39,11 @@
 
             @* Botones de control *@
             <div class="card-footer d-flex justify-content-center">
-                <button class="btn btn-success" type="submit">
-                    <i class="bi bi-floppy"></i> Crear
-                </button>
-                <button class="btn btn-secondary" type="button"
-                        @onclick="Volver">
+                <button type="submit" class="bi bi-floppy btn btn-success">Crear</button>
+
+                <a class="btn btn-secondary" href="/Ciudad/Index">
                     <i class="bi bi-arrow-left"></i> Volver
-                </button>
+                </a>
             </div>
         </div>
     </div>
@@ -104,6 +101,4 @@
             HelpText = $"{DateTime.Now}",
             Message = message,
         };
-
-    public void Volver() => navigation.NavigateTo("/Ciudad/Index");
 }

@@ -1,7 +1,6 @@
 ﻿@page "/Tecnico/Index"
 @rendermode InteractiveServer
 @inject TecnicosService tecnicosService
-@inject NavigationManager navigation
 
 <PageTitle>T&eacute;cnicos</PageTitle>
 
@@ -26,7 +25,8 @@
                     </div>
                     <div class="col-4 col-md-8 text-end">
                         <label for="TotalTecnicos" class="form-label">
-                         Total de técnicos: @ListaTecnicos.Count()</label>
+                            Total de técnicos: @ListaTecnicos.Count()
+                        </label>
                     </div>
                 </div>
 
@@ -41,22 +41,23 @@
                 @* Filtro de búsqueda *@
                 <div class="col-md-8">
                     <div class="input-group">
-                        <input @bind="valorFiltro" class="form-control" placeholder="Escribir dato" />
+                        <input @bind="valorFiltro" class="form-control"
+                               placeholder="Escribir dato" />
                         <button @onclick="Buscar" class="btn btn-primary" type="button">
                             <span class="bi bi-search"></span> Buscar
                         </button>
-                        <button class="btn btn-secondary bi bi-arrow-counterclockwise" type="button"
-                                @onclick="OnInitializedAsync"> Limpiar
+                        <button class="btn btn-secondary bi bi-arrow-counterclockwise"
+                                type="button" @onclick="OnInitializedAsync">
+                            Limpiar
                         </button>
                     </div>
                 </div>
 
                 @* Botón crear *@
                 <div class="col-md-2 text-end">
-                    <button class="btn btn-success bi bi-plus-circle" type="button"
-                            @onclick="Crear">
+                    <a href="/Tecnico/Create" class="btn btn-success bi bi-plus-circle">
                         Crear
-                    </button>
+                    </a>
                 </div>
             </div>
 
@@ -79,12 +80,12 @@
                             <td>@tecnico.Nombres</td>
                             <td>@tecnico.SueldoHora.ToString("C2")</td>
                             <td>
-                                <button type="button" class="btn btn-warning bi bi-pencil-square"
-                                        @onclick="()=>Editar(tecnico.TecnicoId)"></button>
+                                <a href="/Tecnico/Edit/@tecnico.TecnicoId" 
+                                   class="btn btn-warning bi bi-pencil-square"></a>
                             </td>
                             <td>
-                                <button type="button" class="btn btn-danger bi bi-trash"
-                                        @onclick="()=>Eliminar(tecnico.TecnicoId)"></button>
+                                <a href="/Tecnico/Delete/@tecnico.TecnicoId"
+                                   class="btn btn-danger bi bi-trash"></a>
                             </td>
                         </tr>
                     }
@@ -126,20 +127,5 @@
         {
             ListaTecnicos = await tecnicosService.Listar(p => true);
         }
-    }
-
-    public void Crear()
-    {
-        navigation.NavigateTo("/Tecnico/Create");
-    }
-
-    public void Editar(int id)
-    {
-        navigation.NavigateTo($"/Tecnico/Edit/{id}");
-    }
-
-    public void Eliminar(int id)
-    {
-        navigation.NavigateTo($"/Tecnico/Delete/{id}");
     }
 }

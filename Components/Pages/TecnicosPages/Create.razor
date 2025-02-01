@@ -1,7 +1,6 @@
 ﻿@page "/Tecnico/Create"
 @rendermode InteractiveServer
 @inject TecnicosService tecnicosService
-@inject NavigationManager navigation
 
 <PageTitle>Crear t&eacute;cnico</PageTitle>
 
@@ -48,13 +47,11 @@
 
             @* Botones de control *@
             <div class="card-footer d-flex justify-content-center">
-                <button class="btn btn-success" type="submit">
-                        <i class="bi bi-floppy"></i> Crear
-                </button>
-                <button class="btn btn-secondary" type="button" 
-                         @onclick="Volver">
-                         <i class="bi bi-arrow-left"></i> Volver
-                </button>
+                <button type="submit" class="bi bi-floppy btn btn-success">Crear</button>
+
+                <a class="btn btn-secondary" href="/Tecnico/Index">
+                    <i class="bi bi-arrow-left"></i> Volver
+                </a>
             </div>
         </div>
     </div>
@@ -112,6 +109,4 @@
             HelpText = $"{DateTime.Now}",
             Message = message,
         };
-
-    public void Volver() => navigation.NavigateTo("/Tecnico/Index");
 }

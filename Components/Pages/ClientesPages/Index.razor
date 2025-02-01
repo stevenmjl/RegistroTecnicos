@@ -1,7 +1,6 @@
 ﻿@page "/Cliente/Index"
 @rendermode InteractiveServer
 @inject ClientesService clientesService
-@inject NavigationManager navigation
 
 <PageTitle>Clientes</PageTitle>
 
@@ -43,12 +42,13 @@
                 @* Filtro de búsqueda *@
                 <div class="col-md-8">
                     <div class="input-group">
-                        <input @bind="valorFiltro" class="form-control" placeholder="Escribir dato" />
+                        <input @bind="valorFiltro" class="form-control"
+                               placeholder="Escribir dato" />
                         <button @onclick="Buscar" class="btn btn-primary" type="button">
                             <span class="bi bi-search"></span> Buscar
                         </button>
-                        <button class="btn btn-secondary bi bi-arrow-counterclockwise" type="button"
-                                @onclick="OnInitializedAsync">
+                        <button class="btn btn-secondary bi bi-arrow-counterclockwise"
+                                type="button" @onclick="OnInitializedAsync">
                             Limpiar
                         </button>
                     </div>
@@ -56,10 +56,9 @@
 
                 @* Botón crear *@
                 <div class="col-md-2 text-end">
-                    <button class="btn btn-success bi bi-plus-circle" type="button"
-                            @onclick="Crear">
+                    <a href="/Cliente/Create" class="btn btn-success bi bi-plus-circle">
                         Crear
-                    </button>
+                    </a>
                 </div>
             </div>
 
@@ -90,12 +89,12 @@
                             <td>@cliente.LimiteCredito.ToString("C2")</td>
                             <td>@cliente.Tecnico?.Nombres</td>
                             <td>
-                                <button type="button" class="btn btn-warning bi bi-pencil-square"
-                                        @onclick="()=>Editar(cliente.ClienteId)"></button>
+                                <a href="/Cliente/Edit/@cliente.ClienteId"
+                                   class="btn btn-warning bi bi-pencil-square"></a>
                             </td>
                             <td>
-                                <button type="button" class="btn btn-danger bi bi-trash"
-                                        @onclick="()=>Eliminar(cliente.ClienteId)"></button>
+                                <a href="/Cliente/Delete/@cliente.ClienteId"
+                                   class="btn btn-danger bi bi-trash"></a>
                             </td>
                         </tr>
                     }
@@ -144,20 +143,5 @@
         {
             ListaClientes = await clientesService.Listar(p => true);
         }
-    }
-
-    public void Crear()
-    {
-        navigation.NavigateTo("/Cliente/Create");
-    }
-
-    public void Editar(int id)
-    {
-        navigation.NavigateTo($"/Cliente/Edit/{id}");
-    }
-
-    public void Eliminar(int id)
-    {
-        navigation.NavigateTo($"/Cliente/Delete/{id}");
     }
 }

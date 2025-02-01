@@ -1,7 +1,6 @@
 ﻿@page "/Ciudad/Index"
 @rendermode InteractiveServer
 @inject CiudadesService ciudadService
-@inject NavigationManager navigation
 
 <PageTitle>Ciudades</PageTitle>
 
@@ -42,12 +41,13 @@
                 @* Filtro de búsqueda *@
                 <div class="col-md-8">
                     <div class="input-group">
-                        <input @bind="valorFiltro" class="form-control" placeholder="Escribir dato" />
+                        <input @bind="valorFiltro" class="form-control" 
+                               placeholder="Escribir dato" />
                         <button @onclick="Buscar" class="btn btn-primary" type="button">
                             <span class="bi bi-search"></span> Buscar
                         </button>
-                        <button class="btn btn-secondary bi bi-arrow-counterclockwise" type="button"
-                                @onclick="OnInitializedAsync">
+                        <button class="btn btn-secondary bi bi-arrow-counterclockwise"
+                            type="button" @onclick="OnInitializedAsync">
                             Limpiar
                         </button>
                     </div>
@@ -55,10 +55,9 @@
 
                 @* Botón crear *@
                 <div class="col-md-2 text-end">
-                    <button class="btn btn-success bi bi-plus-circle" type="button"
-                            @onclick="Crear">
+                    <a href="/Ciudad/Create" class="btn btn-success bi bi-plus-circle">
                         Crear
-                    </button>
+                    </a>
                 </div>
             </div>
 
@@ -79,12 +78,12 @@
                             <td>@ciudad.CiudadId</td>
                             <td>@ciudad.NombreCiudad</td>
                             <td>
-                                <button type="button" class="btn btn-warning bi bi-pencil-square"
-                                        @onclick="()=>Editar(ciudad.CiudadId)"></button>
+                                <a href="/Ciudad/Edit/@ciudad.CiudadId" 
+                                   class="btn btn-warning bi bi-pencil-square"></a>
                             </td>
                             <td>
-                                <button type="button" class="btn btn-danger bi bi-trash"
-                                        @onclick="()=>Eliminar(ciudad.CiudadId)"></button>
+                                <a href="/Ciudad/Delete/@ciudad.CiudadId" 
+                                   class="btn btn-danger bi bi-trash"></a>
                             </td>
                         </tr>
                     }
@@ -126,20 +125,5 @@
         {
             ListaCiudades = await ciudadService.Listar(p => true);
         }
-    }
-
-    public void Crear()
-    {
-        navigation.NavigateTo("/Ciudad/Create");
-    }
-
-    public void Editar(int id)
-    {
-        navigation.NavigateTo($"/Ciudad/Edit/{id}");
-    }
-
-    public void Eliminar(int id)
-    {
-        navigation.NavigateTo($"/Ciudad/Delete/{id}");
     }
 }
