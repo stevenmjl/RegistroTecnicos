@@ -62,6 +62,8 @@
     protected override async Task OnInitializedAsync()
     {
         Ticket = await ticketsService.Buscar(idTicket);
+        Ticket.Cliente = await clientesService.Buscar(Ticket.ClienteId);
+        Ticket.Tecnico = await tecnicosService.Buscar(Ticket.TecnicoId);
 
         if (Ticket == null)
         {
