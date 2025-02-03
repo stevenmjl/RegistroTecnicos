@@ -19,7 +19,7 @@ public class Clientes
     public string? Nombres { get; set; }
 
     [Required(ErrorMessage = "Debe agregar una dirección.")]
-    [MaxLength(200, ErrorMessage = "La dirección no puede tener más de 200 caracteres.")]
+    [MaxLength(100, ErrorMessage = "La dirección no puede tener más de 100 caracteres.")]
     public string? Direccion { get; set; }
 
     [Required(ErrorMessage = "Debe agregar el RNC.")]
