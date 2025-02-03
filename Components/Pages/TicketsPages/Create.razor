@@ -30,7 +30,7 @@
                 </div>
 
                 @* Asunto *@
-                <div class="mb-3 col-6">
+                <div class="mb-3">
                     <label class="form-label" for="Asunto">Asunto:</label>
                     <InputText id="Asunto" class="form-control"
                                @bind-Value="Ticket.Asunto" placeholder="Ej: Problema de red">
@@ -100,8 +100,9 @@
             </div>
 
             @* Botones de control *@
-            <div class="card-footer d-flex justify-content-center gap-3">
+            <div class="card-footer d-flex justify-content-center">
                 <button type="submit" class="btn btn-success bi bi-floppy">Crear</button>
+                
                 <a class="btn btn-secondary" href="/Ticket/Index">
                     <i class="bi bi-arrow-left"></i> Volver
                 </a>
@@ -122,7 +123,7 @@
         UltimoTicket = 1 + await ticketsService.UltimoId();
         Clientes = await clientesService.Listar(c => true);
         Tecnicos = await tecnicosService.Listar(t => true);
-        Ticket.Fecha = DateTime.Now; // Establecer fecha actual
+        Ticket.Fecha = DateTime.Now;
     }
 
     public async Task Guardar()
@@ -136,7 +137,7 @@
                     $"Ticket #{Ticket.TicketId} ha sido creado correctamente.");
                 Ticket = new Tickets();
                 UltimoTicket = 1 + await ticketsService.UltimoId();
-                Ticket.Fecha = DateTime.Now; // Resetear fecha al crear nuevo
+                Ticket.Fecha = DateTime.Now;
             }
             else
             {
