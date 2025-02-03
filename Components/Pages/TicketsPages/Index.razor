@@ -1,0 +1,145 @@
+﻿@page "/Ticket/Index"
+@rendermode InteractiveServer
+@inject TicketsService ticketsService
+
+<PageTitle>Tickets</PageTitle>
+
+<div class="container">
+    <div class="card shadow-lg">
+        @* Título *@
+        <div class="card-header text-white text-center">
+            <div class="bg-primary rounded">
+                <h1>Consulta de tickets</h1>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row mb-2 align-items-end">
+                @* Textos de apoyo *@
+                <div class="row align-items-center">
+                    <div class="col-4 col-md-2">
+                        <label for="Filtro" class="form-label">Filtrar por:</label>
+                    </div>
+                    <div class="col-4 col-md-2">
+                        <label for="Busqueda" class="form-label">B&uacute;squeda:</label>
+                    </div>
+                    <div class="col-4 col-md-8 text-end">
+                        <label for="TotalTickets" class="form-label">
+                            Total de tickets: @ListaTickets.Count()
+                        </label>
+                    </div>
+                </div>
+
+                @* Selección de filtro *@
+                <div class="col-md-2">
+                    <select @bind="filtro" class="form-select">
+                        <option value="id">ID</option>
+                        <option value="asunto" selected>Asunto</option>
+                        <option value="prioridad">Prioridad</option>
+                    </select>
+                </div>
+
+                @* Filtro de búsqueda *@
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <input @bind="valorFiltro" class="form-control" 
+                               placeholder="Escribir dato" />
+                        <button @onclick="Buscar" class="btn btn-primary" type="button">
+                            <span class="bi bi-search"></span> Buscar
+                        </button>
+                        <button class="btn btn-secondary bi bi-arrow-counterclockwise" 
+                                type="button" @onclick="OnInitializedAsync">
+                            Limpiar
+                        </button>
+                    </div>
+                </div>
+
+                @* Botón crear *@
+                <div class="col-md-2 text-end">
+                    <a href="/Ticket/Create" class="btn btn-success bi bi-plus-circle">
+                        Crear
+                    </a>
+                </div>
+            </div>
+
+            @* Tabla con su lista *@
+            <table class="table table-bordered">
+                <thead class="bg-info text-center text-white">
+                    <tr>
+                        <th>ID</th>
+                        <th>Asunto</th>
+                        <th>Descripci&oacute;n</th>
+                        <th>Fecha</th>
+                        <th>Prioridad</th>
+                        <th>Tiempo Invertido</th>
+                        <th>Cliente</th>
+                        <th>Técnico</th>
+                        <th>Editar</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var ticket in ListaTickets)
+                    {
+                        <tr class="text-center">
+                            <td>@ticket.TicketId</td>
+                            <td>@ticket.Asunto</td>
+                            <td>@ticket.Descripcion</td>
+                            <td>@ticket.Fecha.ToString("dd/MM/yyyy")</td>
+                            <td>@ticket.Prioridad</td>
+                            <td>@ticket.TiempoInvertido.ToString("N1") horas</td>
+                            <td>@ticket.Cliente?.Nombres</td>
+                            <td>@ticket.Tecnico?.Nombres</td>
+                            <td>
+                                <a href="/Ticket/Edit/@ticket.TicketId" 
+                                   class="btn btn-warning bi bi-pencil-square"></a>
+                            </td>
+                            <td>
+                                <a href="/Ticket/Delete/@ticket.TicketId" 
+                                   class="btn btn-danger bi bi-trash"></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@code {
+    public List<Tickets> ListaTickets = new List<Tickets>();
+    private string filtro = "";
+    private string valorFiltro = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListaTickets = await ticketsService.Listar(t => true);
+        filtro = "asunto";
+        valorFiltro = "";
+    }
+
+    private async Task Buscar()
+    {
+        if (valorFiltro.Trim() != "")
+        {
+            if (filtro == "id" && int.TryParse(valorFiltro, out int ticketId))
+            {
+                ListaTickets = await ticketsService.Listar(t => t.TicketId == ticketId);
+            }
+            else if (filtro == "asunto")
+            {
+                ListaTickets = await ticketsService.Listar(t => t.Asunto
+                    .ToLower()
+                    .Contains(valorFiltro.ToLower()));
+            }
+            else if (filtro == "prioridad" && int.TryParse(valorFiltro, out int prioridad))
+            {
+                ListaTickets = await ticketsService.Listar(t => t.Prioridad == prioridad);
+            }
+        }
+        else
+        {
+            ListaTickets = await ticketsService.Listar(t => true);
+        }
+    }
+}
