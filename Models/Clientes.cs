@@ -34,4 +34,9 @@ public class Clientes
     [ForeignKey("TecnicoId")]
     public int TecnicoId { get; set; }
     public Tecnicos? Tecnico { get; set; }
+
+    [Required(ErrorMessage = "Debe asociar una ciudad.")]
+    [ForeignKey("CiudadId")]
+    public int CiudadId { get; set; }
+    public Ciudades? Ciudad { get; set; }
 }

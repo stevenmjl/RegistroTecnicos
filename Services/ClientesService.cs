@@ -69,7 +69,8 @@ namespace RegistroTecnicos.Services
         {
             await using var contexto = await DbFactory.CreateDbContextAsync();
             return await contexto.Clientes
-                .Include(c => c.Tecnico) // Incluye los datos del técnico
+                .Include(t => t.Tecnico)
+                .Include(c => c.Ciudad)
                 .Where(criterio)
                 .ToListAsync();
         }

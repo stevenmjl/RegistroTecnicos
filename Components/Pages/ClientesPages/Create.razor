@@ -2,12 +2,13 @@
 @rendermode InteractiveServer
 @inject ClientesService clientesService
 @inject TecnicosService tecnicosService
+@inject CiudadesService ciudadesService
 
 <PageTitle>Registrar Cliente</PageTitle>
 
 <EditForm Model="Cliente" OnValidSubmit="Guardar">
     <Toasts class="p-3" Messages="Mensajes" Placement="ToastsPlacement.TopRight"
-            AutoHide="true" Delay="5000" />
+    AutoHide="true" Delay="5000" />
     <DataAnnotationsValidator />
 
     <div class="container">
@@ -25,14 +26,14 @@
                 <div class="mb-3 col-2">
                     <label class="form-label" for="ClienteId">ID:</label>
                     <InputNumber id="ClienteId" class="form-control text-left" readonly
-                                 @bind-Value="UltimoCliente"></InputNumber>
+                    @bind-Value="UltimoCliente"></InputNumber>
                 </div>
 
                 @* Nombres *@
                 <div class="mb-3 col-4">
                     <label class="form-label" for="Nombres">Nombres:</label>
                     <InputText id="Nombres" class="form-control"
-                               @bind-Value="Cliente.Nombres" placeholder="Ej: Carla Pérez">
+                    @bind-Value="Cliente.Nombres" placeholder="Ej: Carla Pérez">
                     </InputText>
                     <ValidationMessage For="@(() => Cliente.Nombres)"></ValidationMessage>
                 </div>
@@ -41,7 +42,7 @@
                 <div class="mb-3 col-2">
                     <label class="form-label" for="Rnc">RNC:</label>
                     <InputText id="Rnc" class="form-control"
-                               @bind-Value="Cliente.Rnc" placeholder="Ej: 123456789">
+                    @bind-Value="Cliente.Rnc" placeholder="Ej: 123456789">
                     </InputText>
                     <ValidationMessage For="@(() => Cliente.Rnc)"></ValidationMessage>
                 </div>
@@ -50,7 +51,7 @@
                 <div class="mb-3 col-2">
                     <label class="form-label" for="FechaIngreso">Fecha de ingreso:</label>
                     <input id="FechaIngreso" class="form-control" type="text" 
-                           value="@Cliente.FechaIngreso.ToString("dd/MM/yyyy")" readonly />
+                    value="@Cliente.FechaIngreso.ToString("dd/MM/yyyy")" readonly />
                     <ValidationMessage For="@(() => Cliente.FechaIngreso)"></ValidationMessage>
                 </div>
 
@@ -58,16 +59,29 @@
                 <div class="mb-3">
                     <label class="form-label" for="Direccion">Dirección:</label>
                     <InputText id="Direccion" class="form-control"
-                               @bind-Value="Cliente.Direccion" placeholder="Ej: Calle 123, Santo Domingo">
+                    @bind-Value="Cliente.Direccion" placeholder="Ej: Calle 123, Santo Domingo">
                     </InputText>
                     <ValidationMessage For="@(() => Cliente.Direccion)"></ValidationMessage>
+                </div>
+
+                @* Ciudad *@
+                <div class="mb-3 col-4">
+                    <label class="form-label" for="CiudadId">Ciudad:</label>
+                    <InputSelect id="CiudadId" class="form-control" @bind-Value="Cliente.CiudadId">
+                        <option value="">Seleccione una ciudad:</option>
+                        @foreach (var ciudad in Ciudades)
+                        {
+                            <option value="@ciudad.CiudadId">@ciudad.NombreCiudad</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => Cliente.CiudadId)"></ValidationMessage>
                 </div>
 
                 @* Limite de Crédito *@
                 <div class="mb-3 col-2">
                     <label class="form-label" for="LimiteCredito">Límite Crédito:</label>
                     <InputNumber id="LimiteCredito" class="form-control"
-                                 @bind-Value="Cliente.LimiteCredito"></InputNumber>
+                    @bind-Value="Cliente.LimiteCredito"></InputNumber>
                     <ValidationMessage For="@(() => Cliente.LimiteCredito)"></ValidationMessage>
                 </div>
 
@@ -78,7 +92,7 @@
                         <option value="">Seleccione un t&eacute;cnico:</option>
                         @foreach (var tecnico in Tecnicos)
                         {
-                                    <option value="@tecnico.TecnicoId">@tecnico.Nombres</option>
+                            <option value="@tecnico.TecnicoId">@tecnico.Nombres</option>
                         }
                     </InputSelect>
                     <ValidationMessage For="@(() => Cliente.TecnicoId)"></ValidationMessage>
@@ -101,12 +115,14 @@
     public Clientes? Cliente { get; set; } = new Clientes();
     private int UltimoCliente;
     private List<Tecnicos> Tecnicos = new List<Tecnicos>();
+    private List<Ciudades> Ciudades = new List<Ciudades>();
     List<ToastMessage> Mensajes = new List<ToastMessage>();
 
     protected override async Task OnInitializedAsync()
     {
         UltimoCliente = 1 + await clientesService.UltimoId();
-        Tecnicos = await tecnicosService.Listar(t => true); // Obteniendo todos los técnicos
+        Tecnicos = await tecnicosService.Listar(t => true);
+        Ciudades = await ciudadesService.Listar(c => true);
     }
 
     public async Task Guardar()

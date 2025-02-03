@@ -71,6 +71,7 @@
                         <th>RNC</th>
                         <th>Fecha Ingreso</th>
                         <th>Direcci&oacute;n</th>
+                        <th>Ciudad</th>
                         <th>Cr&eacute;dito l&iacute;mite</th>
                         <th>T&eacute;cnico encargado</th>
                         <th>Editar</th>
@@ -86,6 +87,7 @@
                             <td>@cliente.Rnc</td>
                             <td>@cliente.FechaIngreso.ToString("dd/MM/yyyy")</td>
                             <td>@cliente.Direccion</td>
+                            <td>@cliente.Ciudad?.NombreCiudad</td>
                             <td>@cliente.LimiteCredito.ToString("C2")</td>
                             <td>@cliente.Tecnico?.Nombres</td>
                             <td>
