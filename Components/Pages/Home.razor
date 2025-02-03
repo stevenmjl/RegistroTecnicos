@@ -1,57 +1,75 @@
 ﻿@page "/"
-
 <PageTitle>Home</PageTitle>
 
 <div class="container">
-    @* Titulo *@
+    @* Título *@
     <div class="card shadow-lg">
         <div class="card-header text-white text-center">
             <div class="bg-primary rounded">
                 <h1>Registros web</h1>
             </div>
         </div>
-        @* Cuerpo con descripción de los registros *@
-        <div class="card-body text-center">
-            <h3>Creado por el estudiante Steven</h3>
-            <p>Tarea de Programaci&oacute;n Aplicada I</p>
 
-            <CardGroup>
-                <Card Color="CardColor.Primary" Class="mb-2 me-2 rounded" Style="width:18rem;">
-                    <CardHeader>
-                        <CardTitle>T&eacute;cnicos</CardTitle>
-                    </CardHeader>
-                    <CardBody>
-                        <CardText>
-                            En esa p&aacute;gina usted podra ver, guardar, editar y eliminar sus t&eacute;cnicos.
-                        </CardText>
-                        <Button Color="ButtonColor.Light" To="/Tecnico/Index" Type="ButtonType.Link">Ir a T&eacute;cnicos</Button>
-                    </CardBody>
-                </Card>
+        @* Cuerpo con tarjetas simplificadas *@
+        <div class="card-body">
+            <h3 class="text-center">Creado por el estudiante Steven</h3>
+            <p class="text-center">Tarea de Programaci&oacute;n Aplicada I</p>
 
-                <Card Color="CardColor.Primary" Class="mb-2 me-2 rounded" Style="width:18rem;">
-                    <CardHeader>
-                        <CardTitle>Clientes</CardTitle>
-                    </CardHeader>
-                    <CardBody>
-                        <CardText>
-                            En esa p&aacute;gina usted podra ver, guardar, editar y eliminar sus clientes.
-                        </CardText>
-                        <Button Color="ButtonColor.Light" To="/Cliente/Index" Type="ButtonType.Link">Ir a Clientes</Button>
-                    </CardBody>
-                </Card>
-
-                <Card Color="CardColor.Primary" Class="mb-2 me-2 rounded" Style="width:18rem;">
-                    <CardHeader>
-                        <CardTitle>Ciudades</CardTitle>
-                    </CardHeader>
-                    <CardBody>
-                        <CardText>
-                            En esa p&aacute;gina usted podra ver, guardar, editar y eliminar sus ciudades.
-                        </CardText>
-                        <Button Color="ButtonColor.Light" To="/Ciudad/Index" Type="ButtonType.Link">Ir a Ciudades</Button>
-                    </CardBody>
-                </Card>
-            </CardGroup>
+            <div class="d-flex flex-wrap gap-2">
+                @foreach (var registro in Registros)
+                {
+                    <Card Color="CardColor.Primary" Class="mb-2 rounded flex-grow-1">
+                        <CardHeader>
+                            <CardTitle class="text-start">@registro.Titulo</CardTitle>
+                        </CardHeader>
+                        <CardBody>
+                            <Button Color="ButtonColor.Light" To="@registro.Ruta" Type="ButtonType.Link" Class="w-100">
+                                <span class="@registro.Icono fs-4 align-items-center d-flex justify-content-center" aria-hidden="true"></span>
+                                Ir a @registro.Titulo
+                            </Button>
+                        </CardBody>
+                    </Card>
+                }
+            </div>
         </div>
     </div>
 </div>
+
+@code {
+    // Lista de registros con sus detalles
+    private List<Registro> Registros = new List<Registro>
+    {
+        new Registro
+        {
+            Titulo = "Técnicos",
+            Icono = "bi bi-person-fill-gear",
+            Ruta = "/Tecnico/Index"
+        },
+        new Registro
+        {
+            Titulo = "Clientes",
+            Icono = "bi bi-person-vcard",
+            Ruta = "/Cliente/Index"
+        },
+        new Registro
+        {
+            Titulo = "Ciudades",
+            Icono = "bi bi-buildings-fill",
+            Ruta = "/Ciudad/Index"
+        },
+        new Registro
+        {
+            Titulo = "En progreso",
+            Icono = "bi bi-back",
+            Ruta = "/"
+        }
+    };
+
+    // Clase para representar un registro
+    private class Registro
+    {
+        public string Titulo { get; set; }
+        public string Icono { get; set; }
+        public string Ruta { get; set; }
+    }
+}

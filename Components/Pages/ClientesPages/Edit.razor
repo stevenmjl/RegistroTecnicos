@@ -1,7 +1,8 @@
-﻿@page "/Cliente/Edit/clienteid={idCliente:int}"
+﻿@page "/Cliente/Edit/{idCliente:int}"
 @rendermode InteractiveServer
 @inject ClientesService clientesService
 @inject TecnicosService tecnicosService
+@inject CiudadesService ciudadesService
 @inject NavigationManager navigation
 
 <PageTitle>Editar Cliente</PageTitle>
@@ -61,6 +62,19 @@
                     <ValidationMessage For="@(() => Cliente.Direccion)"></ValidationMessage>
                 </div>
 
+                @* Ciudad *@
+                <div class="mb-3 col-4">
+                    <label class="form-label" for="CiudadId">Ciudad:</label>
+                    <InputSelect id="CiudadId" class="form-control" @bind-Value="Cliente.CiudadId">
+                        <option value="">Seleccione una ciudad:</option>
+                        @foreach (var ciudad in Ciudades)
+                        {
+                            <option value="@ciudad.CiudadId">@ciudad.NombreCiudad</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => Cliente.CiudadId)"></ValidationMessage>
+                </div>
+
                 @* Límite de Crédito *@
                 <div class="mb-3 col-2">
                     <label class="form-label" for="LimiteCredito">Límite Crédito:</label>
@@ -100,25 +114,22 @@
 @code {
     public Clientes? Cliente { get; set; } = new Clientes();
     private List<Tecnicos> Tecnicos = new List<Tecnicos>();
+    private List<Ciudades> Ciudades = new List<Ciudades>();
     private List<ToastMessage> Mensajes = new List<ToastMessage>();
     [Parameter]
     public int idCliente { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        var clienteExistente = await clientesService.Buscar(idCliente);
-        if (clienteExistente != null)
-        {
-            // Desvincula la entidad si ya estaba rastreada
-            clientesService.DesvincularLocal(clienteExistente.ClienteId);
-            Cliente = clienteExistente;
-        }
-        else
+        Cliente = await clientesService.Buscar(idCliente);
+
+        if (Cliente == null)
         {
             navigation.NavigateTo("/Cliente/Index");
+        }else{
+            Tecnicos = await tecnicosService.Listar(t => true);
+            Ciudades = await ciudadesService.Listar(c => true);
         }
-
-        Tecnicos = await tecnicosService.Listar(t => true); // Obteniendo todos los técnicos
     }
 
     public async Task Editar()

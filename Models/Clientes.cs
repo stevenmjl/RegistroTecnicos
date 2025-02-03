@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RegistroTecnicos.Models;
 
@@ -30,6 +31,12 @@ public class Clientes
     public double LimiteCredito { get; set; }
 
     [Required(ErrorMessage = "Debe asociar un técnico.")]
-    [Range(1, int.MaxValue, ErrorMessage = "Seleccione un técnico válido.")]
+    [ForeignKey("TecnicoId")]
     public int TecnicoId { get; set; }
+    public Tecnicos? Tecnico { get; set; }
+
+    [Required(ErrorMessage = "Debe asociar una ciudad.")]
+    [ForeignKey("CiudadId")]
+    public int CiudadId { get; set; }
+    public Ciudades? Ciudad { get; set; }
 }

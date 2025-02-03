@@ -1,16 +1,15 @@
-﻿@page "/Tecnico/Index"
+﻿@page "/Ciudad/Index"
 @rendermode InteractiveServer
-@inject TecnicosService tecnicosService
-@inject NavigationManager navigation
+@inject CiudadesService ciudadService
 
-<PageTitle>T&eacute;cnicos</PageTitle>
+<PageTitle>Ciudades</PageTitle>
 
 <div class="container">
     <div class="card shadow-lg">
         @* Título *@
         <div class="card-header text-white text-center">
             <div class="bg-primary rounded">
-                <h1>Consulta de t&eacute;cnicos</h1>
+                <h1>Consulta de ciudades</h1>
             </div>
         </div>
 
@@ -25,8 +24,9 @@
                         <label for="Busqueda" class="form-label">B&uacute;squeda:</label>
                     </div>
                     <div class="col-4 col-md-8 text-end">
-                        <label for="TotalTecnicos" class="form-label">
-                         Total de técnicos: @ListaTecnicos.Count()</label>
+                        <label for="TotalCiudades" class="form-label">
+                            Total de ciudades: @ListaCiudades.Count()
+                        </label>
                     </div>
                 </div>
 
@@ -34,29 +34,30 @@
                 <div class="col-md-2">
                     <select @bind="filtro" class="form-select">
                         <option value="id">ID</option>
-                        <option value="nombres" selected>Nombres</option>
+                        <option value="nombre" selected>Nombre</option>
                     </select>
                 </div>
 
                 @* Filtro de búsqueda *@
                 <div class="col-md-8">
                     <div class="input-group">
-                        <input @bind="valorFiltro" class="form-control" placeholder="Escribir dato" />
+                        <input @bind="valorFiltro" class="form-control" 
+                               placeholder="Escribir dato" />
                         <button @onclick="Buscar" class="btn btn-primary" type="button">
                             <span class="bi bi-search"></span> Buscar
                         </button>
-                        <button class="btn btn-secondary bi bi-arrow-counterclockwise" type="button"
-                                @onclick="OnInitializedAsync"> Limpiar
+                        <button class="btn btn-secondary bi bi-arrow-counterclockwise"
+                            type="button" @onclick="OnInitializedAsync">
+                            Limpiar
                         </button>
                     </div>
                 </div>
 
                 @* Botón crear *@
                 <div class="col-md-2 text-end">
-                    <button class="btn btn-success bi bi-plus-circle" type="button"
-                            @onclick="Crear">
+                    <a href="/Ciudad/Create" class="btn btn-success bi bi-plus-circle">
                         Crear
-                    </button>
+                    </a>
                 </div>
             </div>
 
@@ -65,26 +66,24 @@
                 <thead class="bg-info text-center text-white">
                     <tr>
                         <th>ID</th>
-                        <th>Nombres</th>
-                        <th>Sueldo hora</th>
+                        <th>Nombre</th>
                         <th>Editar</th>
                         <th>Eliminar</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var tecnico in ListaTecnicos)
+                    @foreach (var ciudad in ListaCiudades)
                     {
                         <tr class="text-center">
-                            <td>@tecnico.TecnicoId</td>
-                            <td>@tecnico.Nombres</td>
-                            <td>@tecnico.SueldoHora.ToString("C2")</td>
+                            <td>@ciudad.CiudadId</td>
+                            <td>@ciudad.NombreCiudad</td>
                             <td>
-                                <button type="button" class="btn btn-warning bi bi-pencil-square"
-                                        @onclick="()=>Editar(tecnico.TecnicoId)"></button>
+                                <a href="/Ciudad/Edit/@ciudad.CiudadId" 
+                                   class="btn btn-warning bi bi-pencil-square"></a>
                             </td>
                             <td>
-                                <button type="button" class="btn btn-danger bi bi-trash"
-                                        @onclick="()=>Eliminar(tecnico.TecnicoId)"></button>
+                                <a href="/Ciudad/Delete/@ciudad.CiudadId" 
+                                   class="btn btn-danger bi bi-trash"></a>
                             </td>
                         </tr>
                     }
@@ -95,14 +94,14 @@
 </div>
 
 @code {
-    public List<Tecnicos> ListaTecnicos = new List<Tecnicos>();
+    public List<Ciudades> ListaCiudades = new List<Ciudades>();
     private string filtro = "";
     private string valorFiltro = "";
 
     protected override async Task OnInitializedAsync()
     {
-        ListaTecnicos = await tecnicosService.Listar(e => true);
-        filtro = "nombres";
+        ListaCiudades = await ciudadService.Listar(e => true);
+        filtro = "nombre";
         valorFiltro = "";
     }
 
@@ -110,13 +109,13 @@
     {
         if (valorFiltro.Trim() != "")
         {
-            if (filtro == "id" && int.TryParse(valorFiltro, out int tecnicoId))
+            if (filtro == "id" && int.TryParse(valorFiltro, out int ciudadId))
             {
-                ListaTecnicos = await tecnicosService.Listar(t => t.TecnicoId == tecnicoId);
+                ListaCiudades = await ciudadService.Listar(t => t.CiudadId == ciudadId);
             }
-            else if (filtro == "nombres")
+            else if (filtro == "nombre")
             {
-                ListaTecnicos = await tecnicosService.Listar(t => t.Nombres
+                ListaCiudades = await ciudadService.Listar(t => t.NombreCiudad
                     .ToLower()
                     .Contains(valorFiltro
                     .ToLower()));
@@ -124,22 +123,7 @@
         }
         else
         {
-            ListaTecnicos = await tecnicosService.Listar(p => true);
+            ListaCiudades = await ciudadService.Listar(p => true);
         }
-    }
-
-    public void Crear()
-    {
-        navigation.NavigateTo("/Tecnico/Create");
-    }
-
-    public void Editar(int id)
-    {
-        navigation.NavigateTo($"/Tecnico/Edit/tecnicoid={id}");
-    }
-
-    public void Eliminar(int id)
-    {
-        navigation.NavigateTo($"/Tecnico/Delete/tecnicoid={id}");
     }
 }

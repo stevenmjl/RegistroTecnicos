@@ -81,16 +81,4 @@ public class CiudadesService(IDbContextFactory<Contexto> DbFactory)
             .FirstOrDefaultAsync();
         return ultimaCiudad != null ? ultimaCiudad.CiudadId : 0;
     }
-
-    // Busca en el caché local, Desvincula la entidad del seguimiento si causa interferencia.
-    public async Task DesvincularLocal(int ciudadId)
-    {
-        await using var contexto = await DbFactory.CreateDbContextAsync();
-        var local = contexto.Set<Ciudades>().Local.FirstOrDefault(l => l.CiudadId == ciudadId);
-
-        if (local == null)
-            return;
-
-        contexto.Entry(local).State = EntityState.Detached;
-    }
 }

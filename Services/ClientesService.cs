@@ -69,8 +69,9 @@ namespace RegistroTecnicos.Services
         {
             await using var contexto = await DbFactory.CreateDbContextAsync();
             return await contexto.Clientes
+                .Include(t => t.Tecnico)
+                .Include(c => c.Ciudad)
                 .Where(criterio)
-                .AsNoTracking()
                 .ToListAsync();
         }
 
@@ -81,29 +82,6 @@ namespace RegistroTecnicos.Services
                 .OrderByDescending(c => c.ClienteId)
                 .FirstOrDefaultAsync();
             return ultimoCliente != null ? ultimoCliente.ClienteId : 0;
-        }
-
-        // Función para obtener el nombre del técnico encargado
-        public async Task<string?> BuscarNombresTecnico(int tecnicoId)
-        {
-            await using var contexto = await DbFactory.CreateDbContextAsync();
-            var nombresTecnico = await contexto.Tecnicos
-                .AsNoTracking()
-                .FirstOrDefaultAsync(t => t.TecnicoId == tecnicoId);
-
-            return nombresTecnico?.Nombres;
-        }
-
-        // Busca en el caché local, Desvincula la entidad del seguimiento si causa interferencia.
-        public async Task DesvincularLocal(int clienteId)
-        {
-            await using var contexto = await DbFactory.CreateDbContextAsync();
-            var local = contexto.Set<Clientes>().Local.FirstOrDefault(l => l.ClienteId == clienteId);
-
-            if (local == null)
-                return;
-
-            contexto.Entry(local).State = EntityState.Detached;
         }
     }
 }

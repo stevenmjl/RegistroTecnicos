@@ -1,7 +1,6 @@
 ﻿@page "/Cliente/Index"
 @rendermode InteractiveServer
 @inject ClientesService clientesService
-@inject NavigationManager navigation
 
 <PageTitle>Clientes</PageTitle>
 
@@ -26,7 +25,8 @@
                     </div>
                     <div class="col-4 col-md-8 text-end">
                         <label for="TotalClientes" class="form-label">
-                         Total de clientes: @ListaClientes.Count()</label>
+                            Total de clientes: @ListaClientes.Count()
+                        </label>
                     </div>
                 </div>
 
@@ -42,22 +42,23 @@
                 @* Filtro de búsqueda *@
                 <div class="col-md-8">
                     <div class="input-group">
-                        <input @bind="valorFiltro" class="form-control" placeholder="Escribir dato" />
+                        <input @bind="valorFiltro" class="form-control"
+                               placeholder="Escribir dato" />
                         <button @onclick="Buscar" class="btn btn-primary" type="button">
                             <span class="bi bi-search"></span> Buscar
                         </button>
-                        <button class="btn btn-secondary bi bi-arrow-counterclockwise" type="button"
-                                @onclick="OnInitializedAsync"> Limpiar
+                        <button class="btn btn-secondary bi bi-arrow-counterclockwise"
+                                type="button" @onclick="OnInitializedAsync">
+                            Limpiar
                         </button>
                     </div>
                 </div>
 
                 @* Botón crear *@
                 <div class="col-md-2 text-end">
-                    <button class="btn btn-success bi bi-plus-circle" type="button"
-                            @onclick="Crear">
+                    <a href="/Cliente/Create" class="btn btn-success bi bi-plus-circle">
                         Crear
-                    </button>
+                    </a>
                 </div>
             </div>
 
@@ -70,6 +71,7 @@
                         <th>RNC</th>
                         <th>Fecha Ingreso</th>
                         <th>Direcci&oacute;n</th>
+                        <th>Ciudad</th>
                         <th>Cr&eacute;dito l&iacute;mite</th>
                         <th>T&eacute;cnico encargado</th>
                         <th>Editar</th>
@@ -79,23 +81,24 @@
                 <tbody>
                     @foreach (var cliente in ListaClientes)
                     {
-                                <tr class="text-center">
-                                    <td>@cliente.ClienteId</td>
-                                    <td>@cliente.Nombres</td>
-                                    <td>@cliente.Rnc</td>
-                                    <td>@cliente.FechaIngreso.ToString("dd/MM/yyyy")</td>
-                                    <td>@cliente.Direccion</td>
-                                    <td>@cliente.LimiteCredito.ToString("C2")</td>
-                                    <td>@NombresTecnico.GetValueOrDefault(cliente.TecnicoId, "Técnico no asignado")</td>
-                                    <td>
-                                        <button type="button" class="btn btn-warning bi bi-pencil-square"
-                                                @onclick="()=>Editar(cliente.ClienteId)"></button>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-danger bi bi-trash"
-                                                @onclick="()=>Eliminar(cliente.ClienteId)"></button>
-                                    </td>
-                                </tr>
+                        <tr class="text-center">
+                            <td>@cliente.ClienteId</td>
+                            <td>@cliente.Nombres</td>
+                            <td>@cliente.Rnc</td>
+                            <td>@cliente.FechaIngreso.ToString("dd/MM/yyyy")</td>
+                            <td>@cliente.Direccion</td>
+                            <td>@cliente.Ciudad?.NombreCiudad</td>
+                            <td>@cliente.LimiteCredito.ToString("C2")</td>
+                            <td>@cliente.Tecnico?.Nombres</td>
+                            <td>
+                                <a href="/Cliente/Edit/@cliente.ClienteId"
+                                   class="btn btn-warning bi bi-pencil-square"></a>
+                            </td>
+                            <td>
+                                <a href="/Cliente/Delete/@cliente.ClienteId"
+                                   class="btn btn-danger bi bi-trash"></a>
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>
@@ -107,23 +110,12 @@
     public List<Clientes> ListaClientes = new List<Clientes>();
     private string filtro = "";
     private string valorFiltro = "";
-    private Dictionary<int, string?> NombresTecnico = new();
 
     protected override async Task OnInitializedAsync()
     {
-        ListaClientes = await clientesService.Listar(e => true);
+        ListaClientes = await clientesService.Listar(c => true);
         filtro = "nombres";
         valorFiltro = "";
-        await CargarNombresTecnicos();
-    }
-
-    private async Task CargarNombresTecnicos()
-    {
-        foreach (var cliente in ListaClientes)
-        {
-            var nombres = await clientesService.BuscarNombresTecnico(cliente.TecnicoId);
-            NombresTecnico[cliente.TecnicoId] = nombres;
-        }
     }
 
     private async Task Buscar()
@@ -153,20 +145,5 @@
         {
             ListaClientes = await clientesService.Listar(p => true);
         }
-    }
-
-    public void Crear()
-    {
-        navigation.NavigateTo("/Cliente/Create");
-    }
-
-    public void Editar(int id)
-    {
-        navigation.NavigateTo($"/Cliente/Edit/clienteid={id}");
-    }
-
-    public void Eliminar(int id)
-    {
-        navigation.NavigateTo($"/Cliente/Delete/clienteid={id}");
     }
 }

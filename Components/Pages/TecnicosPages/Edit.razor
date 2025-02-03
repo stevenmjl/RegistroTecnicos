@@ -1,4 +1,4 @@
-﻿@page "/Tecnico/Edit/tecnicoid={idTecnico:int}"
+﻿@page "/Tecnico/Edit/{idTecnico:int}"
 @rendermode InteractiveServer
 @inject TecnicosService tecnicosService
 @inject NavigationManager navigation
@@ -67,13 +67,10 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var tecnicoExistente = await tecnicosService.Buscar(idTecnico);
-        if (tecnicoExistente != null)
+        Tecnico = await tecnicosService.Buscar(idTecnico);
+
+        if (Tecnico == null)
         {
-            // Desvincula la entidad si ya estaba rastreada
-            tecnicosService.DesvincularLocal(tecnicoExistente.TecnicoId);
-            Tecnico = tecnicoExistente;
-        }else{
             navigation.NavigateTo("/Tecnico/Index");
         }
     }
