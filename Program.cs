@@ -26,6 +26,7 @@ namespace RegistroTecnicos
             builder.Services.AddScoped<ClientesService>();
             builder.Services.AddScoped<CiudadesService>();
             builder.Services.AddScoped<TicketsService>();
+            builder.Services.AddScoped<SistemasService>();
 
             builder.Services.AddBlazorBootstrap();
 
